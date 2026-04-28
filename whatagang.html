@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WHATAGANG — Fantasy Football League</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Teko:wght@400;500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #080a0e;
+  --dark: #0d1017;
+  --surface: #111520;
+  --card: #161b28;
+  --border: #1e2535;
+  --gold: #d4a017;
+  --gold-light: #f0c040;
+  --red: #c0392b;
+  --red-light: #e74c3c;
+  --text: #e8ecf5;
+  --muted: #6b7a99;
+  --dim: #3a4560;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(8,10,14,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 60px;
+}
+
+.nav-logo {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo span {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.nav-links {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Teko', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+
+.nav-links a:hover { color: var(--gold); background: rgba(212,160,23,0.08); }
+.nav-links a.active { color: var(--gold); }
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 24px 60px;
+  overflow: hidden;
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(212,160,23,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,160,23,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+
+.hero-glow {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(212,160,23,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 5px;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  position: relative;
+  animation: fadeUp 0.6s ease both;
+}
+
+.hero h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(5rem, 18vw, 14rem);
+  letter-spacing: 6px;
+  line-height: 0.9;
+  color: var(--text);
+  position: relative;
+  animation: fadeUp 0.7s ease 0.1s both;
+}
+
+.hero h1 em {
+  color: var(--gold);
+  font-style: normal;
+  display: block;
+  -webkit-text-stroke: 2px var(--gold);
+}
+
+.hero-sub {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 4px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 20px;
+  position: relative;
+  animation: fadeUp 0.7s ease 0.2s both;
+}
+
+.hero-divider {
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 28px auto;
+  animation: fadeUp 0.7s ease 0.3s both;
+  position: relative;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 48px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  animation: fadeUp 0.7s ease 0.4s both;
+}
+
+.hero-stat {
+  text-align: center;
+}
+
+.hero-stat .num {
+  font-family: 'Anton', sans-serif;
+  font-size: 3rem;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.hero-stat .label {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--dim);
+  font-family: 'Teko', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  animation: bounce 2s infinite;
+}
+
+.hero-scroll::after {
+  content: '';
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(var(--dim), transparent);
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SECTION COMMON ── */
+section {
+  position: relative;
+  z-index: 1;
+  padding: 80px 32px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 20px;
+}
+
+.section-eyebrow {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 4px;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.section-title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  letter-spacing: 3px;
+  line-height: 1;
+  color: var(--text);
+}
+
+.section-title span { color: var(--gold); }
+
+.section-num {
+  font-family: 'Anton', sans-serif;
+  font-size: 6rem;
+  color: var(--border);
+  line-height: 1;
+  margin-left: auto;
+  user-select: none;
+}
+
+/* ── TROPHY ROOM ── */
+#trophies { background: linear-gradient(180deg, var(--black) 0%, var(--dark) 100%); }
+
+.trophies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.trophy-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.2s;
+  cursor: default;
+  position: relative;
+}
+
+.trophy-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.trophy-card:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 16px 40px rgba(0,0,0,0.5); }
+.trophy-card:hover::before { opacity: 1; }
+
+.trophy-year-banner {
+  background: linear-gradient(135deg, #1a1200, #2a1f00);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.trophy-year {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.8rem;
+  color: var(--gold);
+  letter-spacing: 2px;
+}
+
+.trophy-icon { font-size: 2rem; }
+
+.trophy-body { padding: 20px; }
+
+.trophy-label {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.trophy-winner {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.trophy-record {
+  font-family: 'Teko', sans-serif;
+  font-size: 1rem;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+.trophy-score {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-family: 'Teko', sans-serif;
+  font-size: 0.85rem;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+.trophy-score strong { color: var(--gold); font-size: 1.1rem; }
+
+.empty-slot {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--card),
+    var(--card) 10px,
+    var(--surface) 10px,
+    var(--surface) 20px
+  );
+  opacity: 0.5;
+}
+
+.empty-slot .trophy-year { color: var(--dim); }
+.empty-slot .trophy-winner { color: var(--dim); font-size: 1.2rem; }
+
+/* ── RECORDS ── */
+#records { padding-top: 0; }
+
+.records-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 768px) { .records-layout { grid-template-columns: 1fr; } }
+
+.record-block {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.record-block-header {
+  padding: 16px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.record-block-icon { font-size: 1.4rem; }
+
+.record-block-title {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.record-list { padding: 8px 0; }
+
+.record-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(30,37,53,0.6);
+  transition: background 0.12s;
+  gap: 12px;
+}
+
+.record-row:last-child { border-bottom: none; }
+.record-row:hover { background: rgba(212,160,23,0.04); }
+
+.record-rank {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.1rem;
+  color: var(--dim);
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.record-rank.gold { color: var(--gold); }
+.record-rank.silver { color: #9aa5b4; }
+.record-rank.bronze { color: #c27c2a; }
+
+.record-info { flex: 1; min-width: 0; }
+
+.record-name {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.record-detail {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
+.record-val {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.3rem;
+  color: var(--gold);
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+/* ── AWARDS ── */
+#awards { background: linear-gradient(180deg, var(--dark) 0%, var(--black) 100%); }
+
+.awards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.award-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.award-card:hover { transform: translateY(-3px); border-color: var(--dim); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+
+.award-emoji-banner {
+  background: var(--surface);
+  padding: 28px;
+  text-align: center;
+  font-size: 3.5rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.award-emoji-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(212,160,23,0.06), transparent 70%);
+}
+
+.award-body { padding: 20px; }
+
+.award-name {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.award-desc {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.award-history { border-top: 1px solid var(--border); padding-top: 14px; }
+
+.award-history-title {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.award-winner-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(30,37,53,0.5);
+}
+
+.award-winner-row:last-child { border-bottom: none; }
+
+.award-winner-year {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.85rem;
+  color: var(--dim);
+  letter-spacing: 1px;
+  width: 44px;
+}
+
+.award-winner-name {
+  font-family: 'Teko', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  padding: 0 8px;
+}
+
+.award-winner-detail {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-align: right;
+}
+
+/* ── STANDINGS ── */
+#standings { padding-top: 0; }
+
+.standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.standings-table thead tr {
+  background: var(--surface);
+}
+
+.standings-table th {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.standings-table th:not(:first-child):not(:nth-child(2)) { text-align: center; }
+
+.standings-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(30,37,53,0.5);
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.standings-table tr:last-child td { border-bottom: none; }
+.standings-table tbody tr { transition: background 0.12s; }
+.standings-table tbody tr:hover { background: rgba(212,160,23,0.04); }
+
+.standings-table td:not(:first-child):not(:nth-child(2)) { text-align: center; }
+
+.rank-num {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.2rem;
+  color: var(--dim);
+  width: 36px;
+}
+
+.rank-1 .rank-num { color: var(--gold); }
+.rank-2 .rank-num { color: #9aa5b4; }
+.rank-3 .rank-num { color: #c27c2a; }
+
+.team-name-cell {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text);
+}
+
+.playoff-badge {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  background: rgba(212,160,23,0.15);
+  color: var(--gold);
+  border: 1px solid rgba(212,160,23,0.3);
+  border-radius: 3px;
+  padding: 2px 6px;
+  text-transform: uppercase;
+  margin-left: 8px;
+}
+
+.toilet-badge {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  background: rgba(192,57,43,0.15);
+  color: var(--red-light);
+  border: 1px solid rgba(192,57,43,0.3);
+  border-radius: 3px;
+  padding: 2px 6px;
+  text-transform: uppercase;
+  margin-left: 8px;
+}
+
+.w-l {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.pf { color: var(--gold); font-family: 'Teko', sans-serif; font-size: 1rem; }
+.pa { color: var(--red-light); font-family: 'Teko', sans-serif; font-size: 1rem; }
+.strk { font-family: 'Teko', sans-serif; font-size: 1rem; letter-spacing: 1px; }
+.strk.win { color: #4ade80; }
+.strk.loss { color: var(--red-light); }
+
+/* ── FOOTER ── */
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 32px;
+  text-align: center;
+}
+
+.footer-logo {
+  font-family: 'Anton', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 4px;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.footer-sub {
+  font-family: 'Teko', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+
+/* ── DIVIDER ── */
+.full-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0;
+}
+
+/* ── TICKER ── */
+.ticker-wrap {
+  background: var(--red);
+  padding: 8px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  z-index: 1;
+}
+
+.ticker-inner {
+  display: inline-block;
+  animation: ticker 30s linear infinite;
+  font-family: 'Teko', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 600px) {
+  nav { padding: 0 16px; }
+  .nav-links { display: none; }
+  section { padding: 60px 16px; }
+  .hero-stats { gap: 24px; }
+  .trophies-grid { grid-template-columns: 1fr 1fr; }
+  .awards-grid { grid-template-columns: 1fr; }
+  .section-num { display: none; }
+}
+
+/* ── SCROLL ANIMATIONS ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo"><span></span>WHATAGANG</a>
+  <ul class="nav-links">
+    <li><a href="#trophies">Trophies</a></li>
+    <li><a href="#records">Records</a></li>
+    <li><a href="#awards">Awards</a></li>
+    <li><a href="#idp">IDP</a></li>
+    <li><a href="#standings">Standings</a></li>
+    <li><a href="#draftboard" style="color:var(--gold)">📋 Draft Board</a></li>
+  </ul>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker-wrap" style="margin-top:60px;">
+  <div class="ticker-inner">
+    🏆 WHATAGANG FANTASY FOOTBALL &nbsp;•&nbsp; EST. 2020 &nbsp;•&nbsp; 10 TEAMS &nbsp;•&nbsp; WHERE LEGENDS ARE MADE AND EXCUSES ARE BORN &nbsp;•&nbsp; 🏈 WHATAGANG FANTASY FOOTBALL &nbsp;•&nbsp; EST. 2020 &nbsp;•&nbsp; 10 TEAMS &nbsp;•&nbsp; WHERE LEGENDS ARE MADE AND EXCUSES ARE BORN &nbsp;•&nbsp;
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow">Official Fantasy Football League</div>
+  <h1>WHATA<em>GANG</em></h1>
+  <div class="hero-sub">The Premier Fantasy Experience</div>
+  <div class="hero-divider"></div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="num">10</div>
+      <div class="label">Teams</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num" id="seasonsCount">—</div>
+      <div class="label">Seasons</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">16</div>
+      <div class="label">Rounds</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num" id="champCount">—</div>
+      <div class="label">Champions</div>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</div>
+
+<div class="full-divider"></div>
+
+<!-- TROPHY ROOM -->
+<section id="trophies">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-eyebrow">Hall of Champions</div>
+      <div class="section-title">TROPHY <span>ROOM</span></div>
+    </div>
+    <div class="section-num">01</div>
+  </div>
+  <div class="trophies-grid" id="trophiesGrid"></div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- ALL TIME RECORDS -->
+<section id="records">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-eyebrow">The History Books</div>
+      <div class="section-title">ALL-TIME <span>RECORDS</span></div>
+    </div>
+    <div class="section-num">02</div>
+  </div>
+  <div class="records-layout">
+
+    <div class="record-block reveal">
+      <div class="record-block-header">
+        <div class="record-block-icon">🏆</div>
+        <div class="record-block-title">Most Championships</div>
+      </div>
+      <div class="record-list" id="recChamps"></div>
+    </div>
+
+    <div class="record-block reveal">
+      <div class="record-block-header">
+        <div class="record-block-icon">🔥</div>
+        <div class="record-block-title">Best Single Season Record</div>
+      </div>
+      <div class="record-list" id="recRecords"></div>
+    </div>
+
+    <div class="record-block reveal">
+      <div class="record-block-header">
+        <div class="record-block-icon">💰</div>
+        <div class="record-block-title">Most Points in a Season</div>
+      </div>
+      <div class="record-list" id="recPoints"></div>
+    </div>
+
+    <div class="record-block reveal">
+      <div class="record-block-header">
+        <div class="record-block-icon">📈</div>
+        <div class="record-block-title">Highest Single Week Score</div>
+      </div>
+      <div class="record-list" id="recWeek"></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-eyebrow">Annual Honors</div>
+      <div class="section-title">AWARDS <span>HALL</span></div>
+    </div>
+    <div class="section-num">03</div>
+  </div>
+  <div class="awards-grid" id="awardsGrid"></div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- STANDINGS -->
+<section id="standings">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-eyebrow">Current Season — 2025</div>
+      <div class="section-title">LEAGUE <span>STANDINGS</span></div>
+    </div>
+    <div class="section-num">04</div>
+  </div>
+  <div class="reveal" style="overflow-x:auto;">
+    <table class="standings-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Team</th>
+          <th>W</th>
+          <th>L</th>
+          <th>PF</th>
+          <th>PA</th>
+          <th>Streak</th>
+        </tr>
+      </thead>
+      <tbody id="standingsBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- IDP SPOTLIGHT -->
+<section id="idp">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-eyebrow">Linebacker Slot — IDP</div>
+      <div class="section-title">IDP <span>SPOTLIGHT</span></div>
+    </div>
+    <div class="section-num">05</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;" class="reveal">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:28px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-10px;right:-10px;font-size:6rem;opacity:0.06;pointer-events:none;">🛡️</div>
+      <div style="font-family:'Teko',sans-serif;font-size:0.75rem;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:8px;">League Rule</div>
+      <div style="font-family:'Anton',sans-serif;font-size:1.8rem;letter-spacing:2px;color:var(--text);margin-bottom:12px;">ONE IDP SLOT<br><span style="color:var(--gold)">LINEBACKER</span></div>
+      <div style="font-size:0.9rem;color:var(--muted);line-height:1.7;">Each roster carries one dedicated IDP slot — Linebacker only. LBs score on tackles, sacks, INTs, forced fumbles, and defensive TDs. The right LB can swing a matchup.</div>
+      <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+        <div style="background:rgba(212,160,23,0.1);border:1px solid rgba(212,160,23,0.25);border-radius:6px;padding:7px 12px;font-family:'Teko',sans-serif;font-size:0.82rem;letter-spacing:1px;color:var(--gold);">TACKLE = 1 PT</div>
+        <div style="background:rgba(212,160,23,0.1);border:1px solid rgba(212,160,23,0.25);border-radius:6px;padding:7px 12px;font-family:'Teko',sans-serif;font-size:0.82rem;letter-spacing:1px;color:var(--gold);">SACK = 4 PTS</div>
+        <div style="background:rgba(212,160,23,0.1);border:1px solid rgba(212,160,23,0.25);border-radius:6px;padding:7px 12px;font-family:'Teko',sans-serif;font-size:0.82rem;letter-spacing:1px;color:var(--gold);">INT = 6 PTS</div>
+        <div style="background:rgba(212,160,23,0.1);border:1px solid rgba(212,160,23,0.25);border-radius:6px;padding:7px 12px;font-family:'Teko',sans-serif;font-size:0.82rem;letter-spacing:1px;color:var(--gold);">DEF TD = 6 PTS</div>
+      </div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div style="padding:16px 20px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+        <span style="font-size:1.2rem;">🏅</span>
+        <span style="font-family:'Teko',sans-serif;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase;">Best IDP Season — All Time</span>
+      </div>
+      <div id="idpLeaderboard"></div>
+    </div>
+  </div>
+
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;" class="reveal">
+    <div style="padding:16px 20px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span>📊</span>
+        <span style="font-family:'Teko',sans-serif;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase;">2025 IDP Rankings</span>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="standings-table">
+        <thead><tr>
+          <th>#</th><th>Team</th><th>LB</th><th>TKL</th><th>SK</th><th>INT</th><th>FF</th><th>PTS</th>
+        </tr></thead>
+        <tbody id="idpBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- DRAFT BOARD TAB -->
+<section id="draftboard">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-eyebrow">Live — Updated by Commissioner</div>
+      <div class="section-title">DRAFT <span>BOARD</span></div>
+    </div>
+    <div class="section-num">06</div>
+  </div>
+
+  <div class="reveal" style="background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+    <div style="padding:16px 24px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:1.4rem;">📋</span>
+        <div>
+          <div style="font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:2px;color:var(--gold);">2025 SNAKE DRAFT</div>
+          <div style="font-family:'Teko',sans-serif;font-size:0.8rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;">10 Teams · 16 Rounds · Traded picks in owner's color</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;"></div>
+        <span style="font-family:'Teko',sans-serif;font-size:0.8rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;">Live Board</span>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;padding:16px;">
+      <div id="embeddedLegend" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;"></div>
+      <table id="embeddedBoard" style="border-collapse:collapse;width:100%;min-width:800px;"></table>
+    </div>
+
+    <div style="padding:14px 24px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div style="font-family:'Teko',sans-serif;font-size:0.8rem;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;">Board reflects latest trades — updated by commissioner</div>
+      <a href="draft-board.html" target="_blank" style="font-family:'Teko',sans-serif;font-size:0.85rem;letter-spacing:2px;color:var(--gold);text-decoration:none;text-transform:uppercase;border:1px solid rgba(212,160,23,0.3);padding:6px 14px;border-radius:4px;" onmouseover="this.style.background='rgba(212,160,23,0.1)'" onmouseout="this.style.background='transparent'">↗ Open Full Board</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">WHATAGANG</div>
+  <div class="footer-sub">Fantasy Football League &nbsp;•&nbsp; Built Different</div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════
+// LEAGUE DATA — Edit this to update the site
+// ═══════════════════════════════════════════
+
+const LEAGUE = {
+  name: "WHATAGANG",
+  founded: 2020,
+  teams: 10,
+};
+
+// Add a new entry each season
+const CHAMPIONS = [
+  { year: 2020, winner: "Team Name", record: "10-3", score: "142.6 – 118.2", note: "First ever champ 👑" },
+  { year: 2021, winner: "Team Name", record: "11-2", score: "138.4 – 121.0", note: "" },
+  { year: 2022, winner: "Team Name", record: "9-4",  score: "151.2 – 140.8", note: "Closest final ever" },
+  { year: 2023, winner: "Team Name", record: "12-1", score: "166.0 – 109.4", note: "Most dominant run" },
+  { year: 2024, winner: "Team Name", record: "10-3", score: "144.8 – 133.1", note: "" },
+  { year: 2025, winner: null, record: null, score: null, note: "Season in progress" },
+];
+
+// All-time records — update these manually
+const RECORDS = {
+  champs: [
+    { name: "Team Name", detail: "2021, 2023", val: "2" },
+    { name: "Team Name", detail: "2020", val: "1" },
+    { name: "Team Name", detail: "2022", val: "1" },
+    { name: "Team Name", detail: "2024", val: "1" },
+  ],
+  records: [
+    { name: "Team Name", detail: "2023 Season", val: "12-1" },
+    { name: "Team Name", detail: "2021 Season", val: "11-2" },
+    { name: "Team Name", detail: "2020 Season", val: "10-3" },
+  ],
+  points: [
+    { name: "Team Name", detail: "2023 Season", val: "1,842" },
+    { name: "Team Name", detail: "2021 Season", val: "1,790" },
+    { name: "Team Name", detail: "2024 Season", val: "1,755" },
+  ],
+  week: [
+    { name: "Team Name", detail: "Week 11, 2022", val: "218.4" },
+    { name: "Team Name", detail: "Week 7, 2023",  val: "206.1" },
+    { name: "Team Name", detail: "Week 3, 2021",  val: "198.8" },
+  ],
+};
+
+// Awards — add winners each year
+const AWARDS = [
+  {
+    emoji: "🏆",
+    name: "The Belt",
+    desc: "League Champion. The one who actually did it.",
+    winners: [
+      { year: 2024, name: "Team Name", detail: "10-3" },
+      { year: 2023, name: "Team Name", detail: "12-1" },
+      { year: 2022, name: "Team Name", detail: "9-4" },
+    ]
+  },
+  {
+    emoji: "🚽",
+    name: "Toilet Bowl Trophy",
+    desc: "Last place. May God have mercy on your soul.",
+    winners: [
+      { year: 2024, name: "Team Name", detail: "3-10" },
+      { year: 2023, name: "Team Name", detail: "2-11" },
+      { year: 2022, name: "Team Name", detail: "4-9" },
+    ]
+  },
+  {
+    emoji: "💀",
+    name: "Biggest Choke",
+    desc: "Had the best team. Found a way to lose anyway.",
+    winners: [
+      { year: 2024, name: "Team Name", detail: "#1 seed, 1st round exit" },
+      { year: 2023, name: "Team Name", detail: "Led by 40 at halftime" },
+      { year: 2022, name: "Team Name", detail: "Lost on a missed kick" },
+    ]
+  },
+  {
+    emoji: "🤡",
+    name: "Worst Trade",
+    desc: "The deal that made everyone else feel better about themselves.",
+    winners: [
+      { year: 2024, name: "Team Name", detail: "Traded CMC for depth" },
+      { year: 2023, name: "Team Name", detail: "Gave away a future 1st" },
+      { year: 2022, name: "Team Name", detail: "3 for 1 blunder" },
+    ]
+  },
+  {
+    emoji: "🎯",
+    name: "Best Trade",
+    desc: "Robbed someone blind. Respectfully.",
+    winners: [
+      { year: 2024, name: "Team Name", detail: "Snagged a WR1 for scraps" },
+      { year: 2023, name: "Team Name", detail: "Won the championship on it" },
+      { year: 2022, name: "Team Name", detail: "Buy low of the decade" },
+    ]
+  },
+  {
+    emoji: "🍀",
+    name: "Luckiest Team",
+    desc: "Scored the most points against. Somehow still made playoffs.",
+    winners: [
+      { year: 2024, name: "Team Name", detail: "7th in PF, 3rd in record" },
+      { year: 2023, name: "Team Name", detail: "Schedule carried him" },
+      { year: 2022, name: "Team Name", detail: "Faced bottom 3 all season" },
+    ]
+  },
+  {
+    emoji: "🛡️",
+    name: "IDP Stud of the Year",
+    desc: "The LB who ate. Tackles, sacks, picks — did everything.",
+    winners: [
+      { year: 2024, name: "Team Name", detail: "Micah Parsons — 18 TKL, 3 SK" },
+      { year: 2023, name: "Team Name", detail: "Fred Warner — 22 TKL, 2 INT" },
+      { year: 2022, name: "Team Name", detail: "Roquan Smith — 19 TKL, 1 SK" },
+    ]
+  },
+  {
+    emoji: "💸",
+    name: "IDP Bust Award",
+    desc: "Drafted a LB in round 3. He got hurt in week 1. Classic.",
+    winners: [
+      { year: 2024, name: "Team Name", detail: "Spent a 3rd, got 4 pts total" },
+      { year: 2023, name: "Team Name", detail: "IR week 2, never recovered" },
+      { year: 2022, name: "Team Name", detail: "Benched all season for a kicker" },
+    ]
+  },
+];
+
+// Current season standings
+const STANDINGS = [
+  { name: "Team 1",  w: 8,  l: 5, pf: 1421.4, pa: 1288.2, streak: "W3", playoff: true },
+  { name: "Team 2",  w: 8,  l: 5, pf: 1389.0, pa: 1310.5, streak: "W1", playoff: true },
+  { name: "Team 3",  w: 7,  l: 6, pf: 1355.8, pa: 1340.1, streak: "L1", playoff: true },
+  { name: "Team 4",  w: 7,  l: 6, pf: 1312.4, pa: 1298.7, streak: "W2", playoff: true },
+  { name: "Team 5",  w: 6,  l: 7, pf: 1298.0, pa: 1322.3, streak: "L2", playoff: false },
+  { name: "Team 6",  w: 6,  l: 7, pf: 1280.5, pa: 1341.0, streak: "W1", playoff: false },
+  { name: "Team 7",  w: 5,  l: 8, pf: 1244.2, pa: 1388.6, streak: "L3", playoff: false },
+  { name: "Team 8",  w: 5,  l: 8, pf: 1230.8, pa: 1360.4, streak: "L1", playoff: false },
+  { name: "Team 9",  w: 4,  l: 9, pf: 1198.1, pa: 1402.0, streak: "L2", playoff: false },
+  { name: "Team 10", w: 3,  l: 10, pf: 1155.6, pa: 1421.4, streak: "L4", toilet: true },
+];
+
+// IDP All-time leaderboard
+const IDP_ALLTIME = [
+  { name: "Team Name", detail: "Micah Parsons, 2023", val: "214 pts" },
+  { name: "Team Name", detail: "Fred Warner, 2022",   val: "198 pts" },
+  { name: "Team Name", detail: "Roquan Smith, 2024",  val: "187 pts" },
+];
+
+// IDP current season
+const IDP_2025 = [
+  { team: "Team 1",  lb: "Micah Parsons",  tkl: 44, sk: 6, int: 1, ff: 2, pts: 82 },
+  { team: "Team 2",  lb: "Fred Warner",    tkl: 51, sk: 2, int: 2, ff: 1, pts: 79 },
+  { team: "Team 3",  lb: "Roquan Smith",   tkl: 48, sk: 3, int: 1, ff: 1, pts: 75 },
+  { team: "Team 4",  lb: "Zaire Franklin", tkl: 46, sk: 1, int: 0, ff: 2, pts: 62 },
+  { team: "Team 5",  lb: "T.J. Watt",      tkl: 28, sk: 8, int: 0, ff: 3, pts: 68 },
+  { team: "Team 6",  lb: "Darius Leonard", tkl: 38, sk: 2, int: 1, ff: 1, pts: 55 },
+  { team: "Team 7",  lb: "Devin White",    tkl: 33, sk: 1, int: 1, ff: 0, pts: 48 },
+  { team: "Team 8",  lb: "Bobby Wagner",   tkl: 40, sk: 1, int: 0, ff: 1, pts: 50 },
+  { team: "Team 9",  lb: "Patrick Queen",  tkl: 29, sk: 2, int: 0, ff: 1, pts: 41 },
+  { team: "Team 10", lb: "Jerome Baker",   tkl: 22, sk: 1, int: 0, ff: 0, pts: 29 },
+];
+
+// Draft board colors (match draft-board.html)
+const DB_COLORS = [
+  { bg:'#7f1d1d', text:'#ff6b6b' }, { bg:'#78350f', text:'#ffa94d' },
+  { bg:'#713f12', text:'#ffe066' }, { bg:'#14532d', text:'#69db7c' },
+  { bg:'#134e4a', text:'#3ddbd9' }, { bg:'#1e3a5f', text:'#74c0fc' },
+  { bg:'#3b0764', text:'#cc5de8' }, { bg:'#831843', text:'#f783ac' },
+  { bg:'#0c4a6e', text:'#48cae4' }, { bg:'#7c2d12', text:'#ff8c69' },
+];
+
+function buildIDP() {
+  // Leaderboard
+  const lb = document.getElementById('idpLeaderboard');
+  const rankClass = ['gold','silver','bronze'];
+  lb.innerHTML = IDP_ALLTIME.map((r,i) => `
+    <div class="record-row">
+      <div class="record-rank ${rankClass[i]||''}">${i+1}</div>
+      <div class="record-info">
+        <div class="record-name">${r.name}</div>
+        <div class="record-detail">${r.detail}</div>
+      </div>
+      <div class="record-val">${r.val}</div>
+    </div>`).join('');
+
+  // 2025 IDP table — sort by pts
+  const sorted = [...IDP_2025].sort((a,b) => b.pts - a.pts);
+  const body = document.getElementById('idpBody');
+  body.innerHTML = sorted.map((r,i) => {
+    const rankCls = i < 3 ? `rank-${i+1}` : '';
+    return `<tr class="${rankCls}">
+      <td><div class="rank-num">${i+1}</div></td>
+      <td><span class="team-name-cell">${r.team}</span></td>
+      <td style="font-family:'Teko',sans-serif;font-size:0.95rem;color:var(--muted)">${r.lb}</td>
+      <td style="text-align:center;font-family:'Teko',sans-serif;">${r.tkl}</td>
+      <td style="text-align:center;font-family:'Teko',sans-serif;">${r.sk}</td>
+      <td style="text-align:center;font-family:'Teko',sans-serif;">${r.int}</td>
+      <td style="text-align:center;font-family:'Teko',sans-serif;">${r.ff}</td>
+      <td style="text-align:center;"><span class="pf">${r.pts}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function buildEmbeddedBoard() {
+  const NUM_T = 10, NUM_R = 16;
+
+  // Load saved picks from localStorage (set by draft-board.html)
+  let picks = [], teamNames = DB_COLORS.map((_,i) => `Team ${i+1}`);
+  try {
+    const saved = localStorage.getItem('draftBoardState');
+    if (saved) { const s = JSON.parse(saved); picks = s.picks; teamNames = s.teamNames; }
+  } catch(e) {}
+
+  // Generate default snake picks if nothing saved
+  if (!picks.length) {
+    for (let r = 0; r < NUM_R; r++) {
+      picks[r] = [];
+      for (let s = 0; s < NUM_T; s++) {
+        const ti = r % 2 === 0 ? s : NUM_T - 1 - s;
+        picks[r][s] = { original: ti, current: ti };
+      }
+    }
+  }
+
+  // Legend
+  const legend = document.getElementById('embeddedLegend');
+  legend.innerHTML = DB_COLORS.map((tc, i) => `
+    <div style="display:flex;align-items:center;gap:5px;background:${tc.bg}55;color:${tc.text};padding:3px 10px;border-radius:20px;font-family:'Teko',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.5px;">
+      <div style="width:8px;height:8px;border-radius:50%;background:${tc.text};flex-shrink:0;"></div>
+      ${teamNames[i]}
+    </div>`).join('');
+
+  // Board table
+  const table = document.getElementById('embeddedBoard');
+  let html = '<thead><tr><th style="font-family:\'Anton\',sans-serif;font-size:0.85rem;letter-spacing:1px;color:var(--muted);padding:6px 4px;text-align:left;width:36px;">RND</th>';
+  for (let s = 0; s < NUM_T; s++) html += `<th style="font-family:'Anton',sans-serif;font-size:0.78rem;letter-spacing:1px;color:var(--dim);padding:6px 3px;text-align:center;">P${s+1}</th>`;
+  html += '</tr></thead><tbody>';
+
+  for (let r = 0; r < NUM_R; r++) {
+    html += `<tr style="${r%2===1?'background:rgba(255,255,255,0.015)':''}">`;
+    html += `<td style="font-family:'Anton',sans-serif;font-size:0.9rem;color:var(--muted);padding:2px 4px;">${r+1}</td>`;
+    for (let s = 0; s < NUM_T; s++) {
+      const p = picks[r][s];
+      const tc = DB_COLORS[p.current];
+      const traded = p.current !== p.original;
+      const pickNum = r * NUM_T + s + 1;
+      const short = teamNames[p.current].length > 7 ? teamNames[p.current].slice(0,7)+'…' : teamNames[p.current];
+      html += `<td style="padding:2px;">
+        <div style="background:${tc.bg};color:${tc.text};border-radius:4px;padding:4px 2px;text-align:center;min-height:38px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;${traded?'border:1px solid '+tc.text+'55;':''}" title="Pick ${pickNum} — ${teamNames[p.current]}">
+          <span style="font-family:'Anton',sans-serif;font-size:0.9rem;line-height:1;">${pickNum}</span>
+          <span style="font-size:0.55rem;font-weight:700;opacity:0.85;line-height:1.2;">${short}</span>
+          ${traded?`<span style="position:absolute;top:1px;right:2px;font-size:0.42rem;font-weight:700;background:rgba(0,0,0,0.4);border-radius:2px;padding:1px 2px;">TRD</span>`:''}
+        </div>
+      </td>`;
+    }
+    html += '</tr>';
+  }
+  html += '</tbody>';
+  table.innerHTML = html;
+}
+
+
+
+function buildTrophies() {
+  const grid = document.getElementById('trophiesGrid');
+  const champYears = CHAMPIONS.filter(c => c.winner).length;
+  document.getElementById('seasonsCount').textContent = CHAMPIONS.length;
+  document.getElementById('champCount').textContent = champYears;
+
+  grid.innerHTML = CHAMPIONS.slice().reverse().map(c => {
+    if (!c.winner) {
+      return `<div class="trophy-card empty-slot">
+        <div class="trophy-year-banner">
+          <div class="trophy-year">${c.year}</div>
+          <div class="trophy-icon">⏳</div>
+        </div>
+        <div class="trophy-body">
+          <div class="trophy-label">Champion</div>
+          <div class="trophy-winner">In Progress</div>
+          <div class="trophy-record">${c.note}</div>
+        </div>
+      </div>`;
+    }
+    return `<div class="trophy-card">
+      <div class="trophy-year-banner">
+        <div class="trophy-year">${c.year}</div>
+        <div class="trophy-icon">🏆</div>
+      </div>
+      <div class="trophy-body">
+        <div class="trophy-label">Champion</div>
+        <div class="trophy-winner">${c.winner}</div>
+        <div class="trophy-record">${c.record} • Regular Season</div>
+        ${c.note ? `<div class="trophy-score" style="color:var(--muted);font-style:italic;">"${c.note}"</div>` : ''}
+        <div class="trophy-score">Championship Score: <strong>${c.score}</strong></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function buildRecord(containerId, data) {
+  const el = document.getElementById(containerId);
+  const rankClass = ['gold','silver','bronze'];
+  el.innerHTML = data.map((r, i) => `
+    <div class="record-row">
+      <div class="record-rank ${rankClass[i] || ''}">${i + 1}</div>
+      <div class="record-info">
+        <div class="record-name">${r.name}</div>
+        <div class="record-detail">${r.detail}</div>
+      </div>
+      <div class="record-val">${r.val}</div>
+    </div>
+  `).join('');
+}
+
+function buildRecords() {
+  buildRecord('recChamps', RECORDS.champs);
+  buildRecord('recRecords', RECORDS.records);
+  buildRecord('recPoints', RECORDS.points);
+  buildRecord('recWeek', RECORDS.week);
+}
+
+function buildAwards() {
+  const grid = document.getElementById('awardsGrid');
+  grid.innerHTML = AWARDS.map(a => `
+    <div class="award-card">
+      <div class="award-emoji-banner">${a.emoji}</div>
+      <div class="award-body">
+        <div class="award-name">${a.name}</div>
+        <div class="award-desc">${a.desc}</div>
+        <div class="award-history">
+          <div class="award-history-title">Past Winners</div>
+          ${a.winners.map(w => `
+            <div class="award-winner-row">
+              <div class="award-winner-year">${w.year}</div>
+              <div class="award-winner-name">${w.name}</div>
+              <div class="award-winner-detail">${w.detail}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function buildStandings() {
+  const body = document.getElementById('standingsBody');
+  body.innerHTML = STANDINGS.map((t, i) => {
+    const rankClass = i < 3 ? `rank-${i+1}` : '';
+    const streakClass = t.streak.startsWith('W') ? 'win' : 'loss';
+    const badge = t.playoff ? `<span class="playoff-badge">Playoffs</span>` :
+                  t.toilet  ? `<span class="toilet-badge">Danger</span>` : '';
+    return `<tr class="${rankClass}">
+      <td><div class="rank-num">${i + 1}</div></td>
+      <td><span class="team-name-cell">${t.name}</span>${badge}</td>
+      <td><span class="w-l">${t.w}</span></td>
+      <td><span class="w-l" style="color:var(--muted)">${t.l}</span></td>
+      <td><span class="pf">${t.pf.toFixed(1)}</span></td>
+      <td><span class="pa">${t.pa.toFixed(1)}</span></td>
+      <td><span class="strk ${streakClass}">${t.streak}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── INIT ──
+buildTrophies();
+buildRecords();
+buildAwards();
+buildStandings();
+buildIDP();
+buildEmbeddedBoard();
+
+// Re-observe after dynamic content
+setTimeout(() => {
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}, 100);
+</script>
+</body>
+</html>
