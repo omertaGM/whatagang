@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WHATAGANG — League Bible</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Teko:wght@300;400;500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--black:#06080d;--dark:#0a0d14;--surface:#0e111a;--card:#131825;--border:#1c2235;--border2:#242d45;--gold:#c9920a;--gold2:#e8ab18;--gold3:#f5c842;--red:#b52020;--red2:#d42828;--text:#dde3f0;--text2:#a8b4cc;--muted:#58657e;--dim:#2a3348;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--text);font-family:'Barlow',sans-serif;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.6;}
+.ticker{background:var(--red);height:34px;overflow:hidden;display:flex;align-items:center;position:relative;z-index:200;}
+.ticker::before,.ticker::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;}
+.ticker::before{left:0;background:linear-gradient(90deg,var(--red),transparent);}
+.ticker::after{right:0;background:linear-gradient(-90deg,var(--red),transparent);}
+.ticker-track{display:flex;animation:ticker 40s linear infinite;white-space:nowrap;}
+.ticker-track span{font-family:'Teko',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.92);padding:0 40px;}
+.ticker-track span::before{content:'◆';margin-right:40px;opacity:0.5;font-size:0.5rem;vertical-align:middle;}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+nav{position:sticky;top:0;z-index:500;height:58px;background:rgba(6,8,13,0.96);backdrop-filter:blur(16px) saturate(180%);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 40px;gap:8px;}
+nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,var(--gold) 20%,var(--gold3) 50%,var(--gold) 80%,transparent 100%);background-size:200% 100%;animation:navshine 6s ease-in-out infinite;opacity:0.7;}
+@keyframes navshine{0%,100%{background-position:200% center;opacity:0.4}50%{background-position:-200% center;opacity:0.9}}
+.nav-brand{font-family:'Anton',sans-serif;font-size:1.35rem;letter-spacing:4px;color:var(--gold2);text-decoration:none;display:flex;align-items:center;gap:10px;text-shadow:0 0 30px rgba(201,146,10,0.4);flex-shrink:0;}
+.nav-live-dot{width:7px;height:7px;background:var(--red2);border-radius:50%;animation:livepulse 2s ease-in-out infinite;box-shadow:0 0 6px var(--red2);}
+@keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.75)}}
+.nav-links{display:flex;list-style:none;margin-left:24px;gap:2px;}
+.nav-links a{font-family:'Teko',sans-serif;font-size:1rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:6px 14px;border-radius:3px;transition:color 0.15s,background 0.15s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:2px;left:14px;right:14px;height:1px;background:var(--gold2);transform:scaleX(0);transition:transform 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold2);background:rgba(201,146,10,0.06);}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);}
+.nav-end{margin-left:auto;font-family:'Teko',sans-serif;font-size:0.75rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:58px;background:rgba(6,8,13,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:500;justify-content:space-around;align-items:center;}
+.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--muted);font-family:'Teko',sans-serif;font-size:0.58rem;letter-spacing:1px;text-transform:uppercase;transition:color 0.15s;flex:1;padding:8px;}
+.nav-mobile a:hover,.nav-mobile a.active{color:var(--gold2);}
+.nm-icon{font-size:1.2rem;}
+/* PAGE HERO */
+.page-hero{position:relative;background:var(--black);padding:80px 56px 60px;overflow:hidden;border-bottom:1px solid var(--border);}
+.page-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,146,10,0.07) 0%,transparent 60%);pointer-events:none;}
+.page-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,146,10,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(201,146,10,0.02) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 0%,black,transparent);}
+.page-hero-content{position:relative;z-index:2;max-width:1320px;}
+.page-eyebrow{font-family:'Teko',sans-serif;font-size:0.78rem;letter-spacing:4px;text-transform:uppercase;color:var(--red2);margin-bottom:12px;display:flex;align-items:center;gap:12px;animation:fadeUp 0.5s ease both;}
+.page-eyebrow::before{content:'';width:28px;height:1px;background:var(--red2);opacity:0.6;}
+.page-title{font-family:'Anton',sans-serif;font-size:clamp(3.5rem,10vw,8rem);letter-spacing:2px;line-height:0.9;animation:fadeUp 0.6s ease 0.1s both;}
+.pt-white{display:block;background:linear-gradient(180deg,#ffffff 0%,#c0c8d8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.pt-gold{display:block;background:linear-gradient(180deg,var(--gold3) 0%,var(--gold) 60%,#8a5f00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.page-sub{font-family:'Teko',sans-serif;font-size:1rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:16px;animation:fadeUp 0.6s ease 0.2s both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+/* BAND */
+.band{position:relative;z-index:1;border-top:1px solid var(--border);}
+.band-inner{max-width:1000px;margin:0 auto;padding:80px 40px;}
+.band-alt{background:linear-gradient(180deg,var(--surface) 0%,var(--dark) 100%);}
+/* TIMELINE */
+.timeline{position:relative;padding-left:48px;}
+.timeline::before{content:'';position:absolute;left:16px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--gold),var(--border),var(--dim));}
+.tl-item{position:relative;margin-bottom:64px;}
+.tl-item:last-child{margin-bottom:0;}
+.tl-dot{position:absolute;left:-40px;top:8px;width:18px;height:18px;border-radius:50%;background:var(--gold2);border:3px solid var(--black);box-shadow:0 0 12px rgba(201,146,10,0.5);flex-shrink:0;}
+.tl-year-tag{display:inline-flex;align-items:center;gap:8px;font-family:'Teko',sans-serif;font-size:0.72rem;letter-spacing:3px;color:var(--red2);text-transform:uppercase;margin-bottom:10px;}
+.tl-title{font-family:'Anton',sans-serif;font-size:clamp(2rem,6vw,4rem);letter-spacing:2px;line-height:0.9;margin-bottom:16px;}
+.tl-title .t-w{background:linear-gradient(180deg,#fff,#c0c8d8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.tl-title .t-g{background:linear-gradient(180deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.tl-champion{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,rgba(201,146,10,0.08),rgba(201,146,10,0.03));border:1px solid rgba(201,146,10,0.2);border-radius:6px;padding:14px 18px;margin-bottom:16px;}
+.tl-trophy{font-size:1.8rem;}
+.tl-champ-info{}
+.tl-champ-label{font-family:'Teko',sans-serif;font-size:0.65rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.tl-champ-name{font-family:'Anton',sans-serif;font-size:1.3rem;letter-spacing:1px;color:var(--gold2);}
+.tl-champ-team{font-family:'Teko',sans-serif;font-size:0.9rem;color:var(--text2);letter-spacing:0.5px;}
+.tl-body{font-size:0.92rem;color:var(--text2);line-height:1.7;margin-bottom:16px;}
+.tl-body strong{color:var(--text);}
+.tl-body em{color:var(--gold2);font-style:normal;}
+.tl-standings{background:var(--card);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:16px;}
+.tl-st-head{background:rgba(255,255,255,0.02);padding:10px 16px;border-bottom:1px solid var(--border);font-family:'Teko',sans-serif;font-size:0.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.tl-st-row{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid rgba(28,34,53,0.5);gap:10px;}
+.tl-st-row:last-child{border-bottom:none;}
+.tl-rank{font-family:'Anton',sans-serif;font-size:0.9rem;color:var(--dim);width:18px;flex-shrink:0;}
+.tl-rank.g{color:var(--gold2);}
+.tl-rank.s{color:#8a95aa;}
+.tl-rank.b{color:#9c6a30;}
+.tl-st-team{font-family:'Teko',sans-serif;font-size:0.9rem;font-weight:600;color:var(--text);flex:1;}
+.tl-st-mgr{font-size:0.7rem;color:var(--muted);}
+.tl-st-rec{font-family:'Teko',sans-serif;font-size:0.85rem;color:var(--muted);margin-left:auto;}
+.tl-st-pf{font-family:'Teko',sans-serif;font-size:0.85rem;color:var(--gold2);margin-left:12px;width:55px;text-align:right;}
+/* ORIGIN */
+.origin-card{background:linear-gradient(135deg,rgba(201,146,10,0.06),rgba(181,32,32,0.04));border:1px solid rgba(201,146,10,0.2);border-radius:8px;padding:32px;margin-bottom:48px;}
+.origin-icon{font-size:3rem;margin-bottom:16px;display:block;}
+.origin-title{font-family:'Anton',sans-serif;font-size:2rem;letter-spacing:2px;color:var(--gold2);margin-bottom:12px;}
+.origin-body{font-size:0.95rem;color:var(--text2);line-height:1.8;}
+.origin-body strong{color:var(--text);}
+footer{position:relative;z-index:1;background:var(--black);border-top:1px solid var(--border);padding:40px;text-align:center;overflow:hidden;}
+footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.footer-logo{font-family:'Anton',sans-serif;font-size:2rem;letter-spacing:6px;background:linear-gradient(180deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.footer-sub{font-family:'Teko',sans-serif;font-size:0.78rem;letter-spacing:4px;color:var(--muted);text-transform:uppercase;}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.d1{transition-delay:0.1s;}.d2{transition-delay:0.2s;}
+@media(max-width:768px){.nav-links{display:none;}.nav-mobile{display:flex;}body{padding-bottom:58px;}.band-inner{padding:56px 20px;}.page-hero{padding:60px 24px 40px;}.timeline{padding-left:32px;}}
+</style>
+</head>
+<body>
+<div class="ticker">
+  <div class="ticker-track">
+    <span>WHATAGANG League Bible</span><span>Est. Store #519 · 2021</span>
+    <span>The Origin Story · The Legends · The Lore</span>
+    <span>WHATAGANG League Bible</span><span>Est. Store #519 · 2021</span>
+    <span>The Origin Story · The Legends · The Lore</span>
+  </div>
+</div>
+<nav>
+  <a href="index.html" class="nav-brand"><div class="nav-live-dot"></div>WHATAGANG</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="trophies.html">Trophies</a></li>
+    <li><a href="awards.html">Awards</a></li>
+    <li><a href="teams.html">Teams</a></li>
+    <li><a href="history.html" class="active">History</a></li>
+    <li><a href="draftboard.html">Draft Board</a></li>
+  </ul>
+  <div class="nav-end">2026 Season Coming</div>
+</nav>
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-grid"></div>
+  <div class="page-hero-content">
+    <div class="page-eyebrow">The Sacred Texts</div>
+    <div class="page-title"><span class="pt-white">LEAGUE</span><span class="pt-gold">BIBLE</span></div>
+    <div class="page-sub">Every Season. Every Story. Every Legend.</div>
+  </div>
+</div>
+<div class="band band-alt">
+  <div class="band-inner">
+
+    <div class="origin-card reveal">
+      <span class="origin-icon">🍔</span>
+      <div class="origin-title">In The Beginning — Store #519</div>
+      <div class="origin-body">It started at a <strong>Whataburger</strong>. Not a bar, not a fantasy football draft party, not a group chat. A Whataburger. Specifically <strong>Store #519</strong>, where a group of coworkers spent more time talking trash about NFL rosters than taking orders. Someone said let's make a league. Nobody said no. <strong>WHATAGANG</strong> was born in 2021 with 6 teams, no real rules, and zero expectations. Five seasons later it's still running. The name stayed. The logo pays homage. The punishments got worse. Some members left. Legends were made. This is the story.</div>
+    </div>
+
+    <div class="timeline">
+
+      <!-- 2021 -->
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-year-tag">Season 1 · The Inaugural Year</div>
+        <div class="tl-title"><span class="t-w">SEASON</span><span class="t-g">2021</span></div>
+        <div class="tl-champion"><div class="tl-trophy">🏆</div><div class="tl-champ-info"><div class="tl-champ-label">Champion</div><div class="tl-champ-name">Andrew</div><div class="tl-champ-team">Najee's in Paris</div></div></div>
+        <div class="tl-body">The first ever WHATAGANG season. <strong>6 teams</strong>, Store #519 energy, and zero idea what this would become. <strong>Andrew</strong> won the whole thing with a <em>7-8 losing record</em> — somehow making the playoffs and running the table. Pure chaos. <strong>Jeremiah</strong> finished runner-up. <strong>Anderson Hurley Huggins III</strong> — a founding member whose real name sounds like a Supreme Court justice — finished 3rd as <em>Lil Sniqquhs</em>. It was the last time anyone would see him. A Manager-less bot finished last. Nobody had to do any punishment. Nobody even knew there would ever be a punishment.</div>
+        <div class="tl-standings">
+          <div class="tl-st-head">Final Standings</div>
+          <div class="tl-st-row"><div class="tl-rank g">1</div><div><div class="tl-st-team">Najee's in Paris</div><div class="tl-st-mgr">Andrew 👑</div></div><div class="tl-st-rec">7-8</div><div class="tl-st-pf">1,737</div></div>
+          <div class="tl-st-row"><div class="tl-rank s">2</div><div><div class="tl-st-team">Jeremiah's Fortnite Squad</div><div class="tl-st-mgr">Jeremiah</div></div><div class="tl-st-rec">9-6</div><div class="tl-st-pf">2,009</div></div>
+          <div class="tl-st-row"><div class="tl-rank b">3</div><div><div class="tl-st-team">Lil Sniqquhs</div><div class="tl-st-mgr">Anderson Hurley Huggins III</div></div><div class="tl-st-rec">10-5</div><div class="tl-st-pf">2,074</div></div>
+          <div class="tl-st-row"><div class="tl-rank">4</div><div><div class="tl-st-team">Came On Her TD's</div><div class="tl-st-mgr">Domaniq</div></div><div class="tl-st-rec">9-6</div><div class="tl-st-pf">1,930</div></div>
+          <div class="tl-st-row"><div class="tl-rank">5</div><div><div class="tl-st-team">Diggs in a Blanket</div><div class="tl-st-mgr">Zach</div></div><div class="tl-st-rec">6-9</div><div class="tl-st-pf">1,948</div></div>
+          <div class="tl-st-row"><div class="tl-rank">6</div><div><div class="tl-st-team">Manager-less Team 🤖</div><div class="tl-st-mgr">The Bot</div></div><div class="tl-st-rec">4-11</div><div class="tl-st-pf">1,700</div></div>
+        </div>
+      </div>
+
+      <!-- 2022 -->
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-year-tag">Season 2 · The Back-to-Back</div>
+        <div class="tl-title"><span class="t-w">SEASON</span><span class="t-g">2022</span></div>
+        <div class="tl-champion"><div class="tl-trophy">🏆</div><div class="tl-champ-info"><div class="tl-champ-label">Champion 👑 Back-to-Back</div><div class="tl-champ-name">Andrew</div><div class="tl-champ-team">Long Live Chubbs</div></div></div>
+        <div class="tl-body">The league expanded to <strong>10 teams</strong>. New faces, new chaos. <strong>Andrew</strong> somehow did it again as <em>Long Live Chubbs</em>, becoming the only back-to-back champion in WHATAGANG history. <strong>Adrian's JJETTAS</strong> had the best record in the league at 11-4 and still didn't win it. <strong>Anderson Hurley Huggins III</strong> returned for one final season as <em>Lil Sniqquhs</em>, finishing last with a 4-11 record. It was his last appearance in the league. Rookie of the Year went to <em>Justin Jefferson</em> on Adrian's roster. The Wooden Ship award was not yet established but the seeds were planted.</div>
+        <div class="tl-standings">
+          <div class="tl-st-head">Final Standings</div>
+          <div class="tl-st-row"><div class="tl-rank g">1</div><div><div class="tl-st-team">Long Live Chubbs</div><div class="tl-st-mgr">Andrew 👑</div></div><div class="tl-st-rec">8-7</div><div class="tl-st-pf">1,873</div></div>
+          <div class="tl-st-row"><div class="tl-rank s">2</div><div><div class="tl-st-team">Brandon's Swag Team</div><div class="tl-st-mgr">Bdawg</div></div><div class="tl-st-rec">10-5</div><div class="tl-st-pf">1,784</div></div>
+          <div class="tl-st-row"><div class="tl-rank b">3</div><div><div class="tl-st-team">Jeremiah's Fortnite Squad</div><div class="tl-st-mgr">Jeremiah</div></div><div class="tl-st-rec">9-6</div><div class="tl-st-pf">1,693</div></div>
+          <div class="tl-st-row"><div class="tl-rank">4</div><div><div class="tl-st-team">JJETTAS</div><div class="tl-st-mgr">Adrian</div></div><div class="tl-st-rec">11-4</div><div class="tl-st-pf">1,915</div></div>
+          <div class="tl-st-row"><div class="tl-rank">5</div><div><div class="tl-st-team">Netflix and Hill</div><div class="tl-st-mgr">Zach</div></div><div class="tl-st-rec">7-8</div><div class="tl-st-pf">1,813</div></div>
+          <div class="tl-st-row"><div class="tl-rank">6</div><div><div class="tl-st-team">Davashtian's Primo Team</div><div class="tl-st-mgr">Davashtian</div></div><div class="tl-st-rec">7-8</div><div class="tl-st-pf">1,825</div></div>
+          <div class="tl-st-row"><div class="tl-rank">7</div><div><div class="tl-st-team">Watsons Gonna TD There</div><div class="tl-st-mgr">Domaniq</div></div><div class="tl-st-rec">7-8</div><div class="tl-st-pf">1,674</div></div>
+          <div class="tl-st-row"><div class="tl-rank">8</div><div><div class="tl-st-team">The BallZach's</div><div class="tl-st-mgr">Dominic</div></div><div class="tl-st-rec">6-9</div><div class="tl-st-pf">1,806</div></div>
+          <div class="tl-st-row"><div class="tl-rank">9</div><div><div class="tl-st-team">Evan's Extraordinary Team</div><div class="tl-st-mgr">Evan</div></div><div class="tl-st-rec">6-9</div><div class="tl-st-pf">1,780</div></div>
+          <div class="tl-st-row"><div class="tl-rank">10</div><div><div class="tl-st-team">Lil Sniqquhs 👻</div><div class="tl-st-mgr">Anderson Hurley Huggins III</div></div><div class="tl-st-rec">4-11</div><div class="tl-st-pf">1,532</div></div>
+        </div>
+      </div>
+
+      <!-- 2023 -->
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-year-tag">Season 3 · The Dynasty Ends</div>
+        <div class="tl-title"><span class="t-w">SEASON</span><span class="t-g">2023</span></div>
+        <div class="tl-champion"><div class="tl-trophy">🏆</div><div class="tl-champ-info"><div class="tl-champ-label">Champion</div><div class="tl-champ-name">Zach</div><div class="tl-champ-team">Saints Row</div></div></div>
+        <div class="tl-body"><strong>Zach</strong> finally broke through as <em>Saints Row</em>, ending Andrew's dynasty and putting up the <em>highest scoring season in WHATAGANG history at 2,040 points</em>. <strong>Dominic's BallZachs</strong> went 11-4 — best regular season record ever — but still didn't win. <strong>Jeremiah</strong> had the worst season in league history as <em>Double Kupp</em>, going 2-13. The bot finished last again, saving everyone from the punishment for a second time. <strong>Andrew</strong> missed the playoffs entirely as <em>Let Him Cook</em>. The king had fallen.</div>
+        <div class="tl-standings">
+          <div class="tl-st-head">Final Standings</div>
+          <div class="tl-st-row"><div class="tl-rank g">1</div><div><div class="tl-st-team">Saints Row</div><div class="tl-st-mgr">Zach 🏆</div></div><div class="tl-st-rec">10-5</div><div class="tl-st-pf">2,040</div></div>
+          <div class="tl-st-row"><div class="tl-rank s">2</div><div><div class="tl-st-team">The BallZachs</div><div class="tl-st-mgr">Dominic</div></div><div class="tl-st-rec">11-4</div><div class="tl-st-pf">1,935</div></div>
+          <div class="tl-st-row"><div class="tl-rank b">3</div><div><div class="tl-st-team">Evans Inconsistent Gang</div><div class="tl-st-mgr">Evan</div></div><div class="tl-st-rec">7-8</div><div class="tl-st-pf">1,857</div></div>
+          <div class="tl-st-row"><div class="tl-rank">4</div><div><div class="tl-st-team">Davashtian's Primo Team</div><div class="tl-st-mgr">Davashtian</div></div><div class="tl-st-rec">8-7</div><div class="tl-st-pf">1,934</div></div>
+          <div class="tl-st-row"><div class="tl-rank">5</div><div><div class="tl-st-team">I Lose Too Much</div><div class="tl-st-mgr">Adrian</div></div><div class="tl-st-rec">9-6</div><div class="tl-st-pf">1,842</div></div>
+          <div class="tl-st-row"><div class="tl-rank">6</div><div><div class="tl-st-team">Let Him Cook</div><div class="tl-st-mgr">Andrew</div></div><div class="tl-st-rec">8-7</div><div class="tl-st-pf">1,745</div></div>
+          <div class="tl-st-row"><div class="tl-rank">7</div><div><div class="tl-st-team">StroudTown</div><div class="tl-st-mgr">Domaniq</div></div><div class="tl-st-rec">7-8</div><div class="tl-st-pf">1,664</div></div>
+          <div class="tl-st-row"><div class="tl-rank">8</div><div><div class="tl-st-team">Brandon's Swag Team</div><div class="tl-st-mgr">Bdawg</div></div><div class="tl-st-rec">6-9</div><div class="tl-st-pf">1,651</div></div>
+          <div class="tl-st-row"><div class="tl-rank">9</div><div><div class="tl-st-team">Double Kupp 💀</div><div class="tl-st-mgr">Jeremiah</div></div><div class="tl-st-rec">2-13</div><div class="tl-st-pf">1,622</div></div>
+          <div class="tl-st-row"><div class="tl-rank">10</div><div><div class="tl-st-team">I Just Work Here? 🤖</div><div class="tl-st-mgr">The Bot</div></div><div class="tl-st-rec">7-8</div><div class="tl-st-pf">1,534</div></div>
+        </div>
+      </div>
+
+      <!-- 2024 -->
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-year-tag">Season 4 · The Primo Run</div>
+        <div class="tl-title"><span class="t-w">SEASON</span><span class="t-g">2024</span></div>
+        <div class="tl-champion"><div class="tl-trophy">🏆</div><div class="tl-champ-info"><div class="tl-champ-label">Champion</div><div class="tl-champ-name">Davashtian</div><div class="tl-champ-team">Davashtian's Primo Team</div></div></div>
+        <div class="tl-body"><strong>Davashtian</strong> finally got his ring as <em>Davashtian's Primo Team</em> — same name he's had since day one. <strong>Evan's Mr. Miyagis Gambit BNL</strong> put up 1,950 points, most in the league, but couldn't close in the playoffs. <strong>Saquon Barkley</strong> won League MVP on Davashtian's roster. The <strong>Greatest Show on Turf</strong> was Andrew vs Bdawg, 181-147. <strong>Zach's Gibbs Me Moore</strong> ran the table for 2nd place. And then there was <strong>Domaniq</strong> — 3-11, last place, toilet bowl assignment: <em>The Milk Mile</em>. He didn't show up. He just left. Gone. The league needed a new member.</div>
+        <div class="tl-standings">
+          <div class="tl-st-head">Final Standings</div>
+          <div class="tl-st-row"><div class="tl-rank g">1</div><div><div class="tl-st-team">Davashtian's Primo Team</div><div class="tl-st-mgr">Davashtian 🏆</div></div><div class="tl-st-rec">9-5</div><div class="tl-st-pf">1,867</div></div>
+          <div class="tl-st-row"><div class="tl-rank s">2</div><div><div class="tl-st-team">Gibbs Me Moore</div><div class="tl-st-mgr">Zach</div></div><div class="tl-st-rec">7-7</div><div class="tl-st-pf">1,858</div></div>
+          <div class="tl-st-row"><div class="tl-rank b">3</div><div><div class="tl-st-team">Frijoleros</div><div class="tl-st-mgr">Fabian</div></div><div class="tl-st-rec">8-6</div><div class="tl-st-pf">1,802</div></div>
+          <div class="tl-st-row"><div class="tl-rank">4</div><div><div class="tl-st-team">Mr Miyagis Gambit BNL</div><div class="tl-st-mgr">Evan</div></div><div class="tl-st-rec">9-5</div><div class="tl-st-pf">1,950</div></div>
+          <div class="tl-st-row"><div class="tl-rank">5</div><div><div class="tl-st-team">Marvin's Room</div><div class="tl-st-mgr">Andrew</div></div><div class="tl-st-rec">9-5</div><div class="tl-st-pf">1,865</div></div>
+          <div class="tl-st-row"><div class="tl-rank">6</div><div><div class="tl-st-team">Massage My Boswell</div><div class="tl-st-mgr">Adrian</div></div><div class="tl-st-rec">9-5</div><div class="tl-st-pf">1,757</div></div>
+          <div class="tl-st-row"><div class="tl-rank">7</div><div><div class="tl-st-team">Hawk Nacua</div><div class="tl-st-mgr">Bdawg</div></div><div class="tl-st-rec">4-10</div><div class="tl-st-pf">1,742</div></div>
+          <div class="tl-st-row"><div class="tl-rank">8</div><div><div class="tl-st-team">StroudTown 🏃</div><div class="tl-st-mgr">Domaniq</div></div><div class="tl-st-rec">3-11</div><div class="tl-st-pf">1,690</div></div>
+          <div class="tl-st-row"><div class="tl-rank">9</div><div><div class="tl-st-team">We Bring The Boom</div><div class="tl-st-mgr">Jeremiah</div></div><div class="tl-st-rec">7-7</div><div class="tl-st-pf">1,756</div></div>
+          <div class="tl-st-row"><div class="tl-rank">10</div><div><div class="tl-st-team">Chase Da Bag</div><div class="tl-st-mgr">Dominic</div></div><div class="tl-st-rec">5-9</div><div class="tl-st-pf">1,751</div></div>
+        </div>
+      </div>
+
+      <!-- 2025 -->
+      <div class="tl-item reveal">
+        <div class="tl-dot" style="background:var(--gold3);box-shadow:0 0 20px rgba(245,200,66,0.6);"></div>
+        <div class="tl-year-tag">Season 5 · The Comeback</div>
+        <div class="tl-title"><span class="t-w">SEASON</span><span class="t-g">2025</span></div>
+        <div class="tl-champion"><div class="tl-trophy">🏆</div><div class="tl-champ-info"><div class="tl-champ-label">Champion</div><div class="tl-champ-name">Josh</div><div class="tl-champ-team">Joshua's Deepball</div></div></div>
+        <div class="tl-body"><strong>Josh</strong> replaced Domaniq and immediately made everyone wish they'd taken him more seriously. He started <em>1-5</em>. He looked done. He finished <em>8-6</em>, made the playoffs, and won the whole thing in his first season. Rookie. Champion. Legend. <strong>Jeremiah's Super Lamario</strong> finished second. <strong>Adrian's Indiana Jones</strong> third. And then there was <strong>Andrew</strong> — who somehow ended up last place as <em>INJUR-EES</em> and had to serve the punishment. <em>24 hours at Whataburger.</em> Store #519. Where it all began. He showed up. He served the time. The first manager in WHATAGANG history to actually do the punishment. A soldier.</div>
+        <div class="tl-standings">
+          <div class="tl-st-head">Final Standings</div>
+          <div class="tl-st-row"><div class="tl-rank g">1</div><div><div class="tl-st-team">Joshua's Deepball</div><div class="tl-st-mgr">Josh 🏆</div></div><div class="tl-st-rec">8-6</div><div class="tl-st-pf">1,951</div></div>
+          <div class="tl-st-row"><div class="tl-rank s">2</div><div><div class="tl-st-team">Super Lamario</div><div class="tl-st-mgr">Jeremiah</div></div><div class="tl-st-rec">8-6</div><div class="tl-st-pf">1,904</div></div>
+          <div class="tl-st-row"><div class="tl-rank b">3</div><div><div class="tl-st-team">Indiana Jones</div><div class="tl-st-mgr">Adrian</div></div><div class="tl-st-rec">9-5</div><div class="tl-st-pf">1,800</div></div>
+          <div class="tl-st-row"><div class="tl-rank">4</div><div><div class="tl-st-team">Davashtian's Primo Team</div><div class="tl-st-mgr">Davashtian</div></div><div class="tl-st-rec">9-5</div><div class="tl-st-pf">1,872</div></div>
+          <div class="tl-st-row"><div class="tl-rank">5</div><div><div class="tl-st-team">Amon One</div><div class="tl-st-mgr">Bdawg</div></div><div class="tl-st-rec">7-7</div><div class="tl-st-pf">1,876</div></div>
+          <div class="tl-st-row"><div class="tl-rank">6</div><div><div class="tl-st-team">Frijoleros</div><div class="tl-st-mgr">Fabian</div></div><div class="tl-st-rec">7-7</div><div class="tl-st-pf">1,816</div></div>
+          <div class="tl-st-row"><div class="tl-rank">7</div><div><div class="tl-st-team">Mr Miyagis Gambit BNL</div><div class="tl-st-mgr">Evan</div></div><div class="tl-st-rec">6-8</div><div class="tl-st-pf">1,805</div></div>
+          <div class="tl-st-row"><div class="tl-rank">8</div><div><div class="tl-st-team">A Bobby Shop Haircut</div><div class="tl-st-mgr">Dominic</div></div><div class="tl-st-rec">5-9</div><div class="tl-st-pf">1,621</div></div>
+          <div class="tl-st-row"><div class="tl-rank">9</div><div><div class="tl-st-team">Moore Mooney Moore Problems</div><div class="tl-st-mgr">Zach</div></div><div class="tl-st-rec">5-9</div><div class="tl-st-pf">1,510</div></div>
+          <div class="tl-st-row"><div class="tl-rank">10</div><div><div class="tl-st-team">INJUR-EES 🚽</div><div class="tl-st-mgr">Andrew — 24hrs at Whataburger</div></div><div class="tl-st-rec">6-8</div><div class="tl-st-pf">1,608</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<footer><div class="footer-logo">WHATAGANG</div><div class="footer-sub">Fantasy Football League · Est. Store #519 · 2021 · Built Different</div></footer>
+<div class="nav-mobile">
+  <a href="index.html"><span class="nm-icon">🏠</span>Home</a>
+  <a href="trophies.html"><span class="nm-icon">🏆</span>Trophies</a>
+  <a href="teams.html"><span class="nm-icon">👤</span>Teams</a>
+  <a href="awards.html"><span class="nm-icon">🎖️</span>Awards</a>
+  <a href="history.html" class="active"><span class="nm-icon">📖</span>History</a>
+</div>
+<script>const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:0.06});setTimeout(()=>document.querySelectorAll('.reveal').forEach(el=>obs.observe(el)),80);</script>
+</body>
+</html>

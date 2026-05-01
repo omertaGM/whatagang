@@ -6,20 +6,11 @@
 <title>WHATAGANG — Fantasy Football League</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Teko:wght@300;400;500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --black:#06080d;--dark:#0a0d14;--surface:#0e111a;--card:#131825;
-  --border:#1c2235;--border2:#242d45;
-  --gold:#c9920a;--gold2:#e8ab18;--gold3:#f5c842;--gold-g:rgba(201,146,10,0.15);
-  --red:#b52020;--red2:#d42828;
-  --text:#dde3f0;--text2:#a8b4cc;--muted:#58657e;--dim:#2a3348;
-}
+:root{--black:#06080d;--dark:#0a0d14;--surface:#0e111a;--card:#131825;--border:#1c2235;--border2:#242d45;--gold:#c9920a;--gold2:#e8ab18;--gold3:#f5c842;--red:#b52020;--red2:#d42828;--text:#dde3f0;--text2:#a8b4cc;--muted:#58657e;--dim:#2a3348;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--black);color:var(--text);font-family:'Barlow',sans-serif;overflow-x:hidden;}
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.6;}
-
-/* TICKER */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.6;}
 .ticker{background:var(--red);height:34px;overflow:hidden;display:flex;align-items:center;position:relative;z-index:200;}
 .ticker::before,.ticker::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;}
 .ticker::before{left:0;background:linear-gradient(90deg,var(--red),transparent);}
@@ -28,8 +19,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .ticker-track span{font-family:'Teko',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.92);padding:0 40px;}
 .ticker-track span::before{content:'◆';margin-right:40px;opacity:0.5;font-size:0.5rem;vertical-align:middle;}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-/* NAV */
 nav{position:sticky;top:0;z-index:500;height:58px;background:rgba(6,8,13,0.96);backdrop-filter:blur(16px) saturate(180%);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 40px;gap:8px;}
 nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,var(--gold) 20%,var(--gold3) 50%,var(--gold) 80%,transparent 100%);background-size:200% 100%;animation:navshine 6s ease-in-out infinite;opacity:0.7;}
 @keyframes navshine{0%,100%{background-position:200% center;opacity:0.4}50%{background-position:-200% center;opacity:0.9}}
@@ -39,202 +28,106 @@ nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;backg
 .nav-links{display:flex;list-style:none;margin-left:24px;gap:2px;}
 .nav-links a{font-family:'Teko',sans-serif;font-size:1rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:6px 14px;border-radius:3px;transition:color 0.15s,background 0.15s;position:relative;}
 .nav-links a::after{content:'';position:absolute;bottom:2px;left:14px;right:14px;height:1px;background:var(--gold2);transform:scaleX(0);transition:transform 0.2s;}
-.nav-links a:hover{color:var(--gold2);background:rgba(201,146,10,0.06);}
-.nav-links a:hover::after{transform:scaleX(1);}
+.nav-links a:hover,.nav-links a.active{color:var(--gold2);background:rgba(201,146,10,0.06);}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);}
 .nav-end{margin-left:auto;font-family:'Teko',sans-serif;font-size:0.75rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
-
+.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:58px;background:rgba(6,8,13,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:500;justify-content:space-around;align-items:center;}
+.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--muted);font-family:'Teko',sans-serif;font-size:0.58rem;letter-spacing:1px;text-transform:uppercase;transition:color 0.15s;flex:1;padding:8px;}
+.nav-mobile a:hover,.nav-mobile a.active{color:var(--gold2);}
+.nm-icon{font-size:1.2rem;}
 /* HERO */
 .hero{position:relative;min-height:calc(100vh - 92px);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:var(--black);}
-.hero-field-surface{position:absolute;bottom:-10%;left:-20%;right:-20%;height:70%;
-  background:repeating-linear-gradient(90deg,rgba(255,255,255,0.022) 0px,rgba(255,255,255,0.022) 1px,transparent 1px,transparent 80px),repeating-linear-gradient(180deg,transparent 0px,transparent 79px,rgba(255,255,255,0.015) 79px,rgba(255,255,255,0.015) 80px),linear-gradient(180deg,transparent 0%,rgba(10,30,10,0.25) 100%);
-  transform:perspective(700px) rotateX(55deg);transform-origin:bottom center;}
-.hero-atmo{position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 30%,rgba(201,146,10,0.06) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 20% 70%,rgba(181,32,32,0.08) 0%,transparent 50%),radial-gradient(ellipse 60% 40% at 80% 70%,rgba(181,32,32,0.06) 0%,transparent 50%),linear-gradient(180deg,rgba(6,8,13,0.2) 0%,rgba(6,8,13,0.0) 40%,rgba(6,8,13,0.7) 80%,var(--black) 100%);pointer-events:none;}
+.hero-field-surface{position:absolute;bottom:-10%;left:-20%;right:-20%;height:70%;background:repeating-linear-gradient(90deg,rgba(255,255,255,0.022) 0px,rgba(255,255,255,0.022) 1px,transparent 1px,transparent 80px),repeating-linear-gradient(180deg,transparent 0px,transparent 79px,rgba(255,255,255,0.015) 79px,rgba(255,255,255,0.015) 80px);transform:perspective(700px) rotateX(55deg);transform-origin:bottom center;}
+.hero-atmo{position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 30%,rgba(201,146,10,0.06) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 20% 70%,rgba(181,32,32,0.08) 0%,transparent 50%),radial-gradient(ellipse 60% 40% at 80% 70%,rgba(181,32,32,0.06) 0%,transparent 50%),linear-gradient(180deg,rgba(6,8,13,0.0) 40%,rgba(6,8,13,0.8) 80%,var(--black) 100%);pointer-events:none;}
 .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,146,10,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(201,146,10,0.025) 1px,transparent 1px);background-size:70px 70px;mask-image:radial-gradient(ellipse 70% 70% at 50% 40%,black 20%,transparent 75%);}
 .hero-content{position:relative;z-index:2;padding:0 56px 72px;max-width:1400px;}
 .hero-tag{display:inline-flex;align-items:center;gap:10px;font-family:'Teko',sans-serif;font-size:0.78rem;letter-spacing:4px;text-transform:uppercase;color:var(--red2);margin-bottom:20px;animation:fadeUp 0.5s ease both;}
 .hero-tag::before{content:'';width:32px;height:1px;background:var(--red2);opacity:0.6;}
 .hero-title{font-family:'Anton',sans-serif;font-size:clamp(6rem,20vw,16rem);letter-spacing:2px;line-height:0.85;animation:fadeUp 0.65s ease 0.08s both;}
-.hero-title .t-ghost{display:block;color:transparent;-webkit-text-stroke:1.5px rgba(201,146,10,0.2);font-size:0.55em;letter-spacing:10px;margin-bottom:4px;}
-.hero-title .t-main{display:block;background:linear-gradient(180deg,#ffffff 0%,#c0c8d8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 4px 40px rgba(201,146,10,0.2));}
-.hero-title .t-gold{display:block;background:linear-gradient(180deg,var(--gold3) 0%,var(--gold) 60%,#8a5f00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 40px rgba(201,146,10,0.5));}
+.t-ghost{display:block;color:transparent;-webkit-text-stroke:1.5px rgba(201,146,10,0.2);font-size:0.55em;letter-spacing:10px;margin-bottom:4px;}
+.t-main{display:block;background:linear-gradient(180deg,#ffffff 0%,#c0c8d8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.t-gold{display:block;background:linear-gradient(180deg,var(--gold3) 0%,var(--gold) 60%,#8a5f00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 40px rgba(201,146,10,0.5));}
 .hero-rule{display:flex;align-items:center;gap:16px;margin:28px 0;animation:fadeUp 0.65s ease 0.18s both;max-width:700px;}
 .hero-rule-line{flex:1;height:1px;background:linear-gradient(90deg,var(--gold),transparent);}
 .hero-rule-diamond{width:6px;height:6px;background:var(--gold2);transform:rotate(45deg);box-shadow:0 0 8px var(--gold2);flex-shrink:0;}
 .hero-stats{display:flex;gap:0;animation:fadeUp 0.65s ease 0.26s both;flex-wrap:wrap;}
 .hero-stat{padding:14px 32px;border:1px solid var(--border);border-right:none;background:rgba(12,14,22,0.7);backdrop-filter:blur(8px);position:relative;transition:background 0.2s;}
 .hero-stat:last-child{border-right:1px solid var(--border);}
-.hero-stat::before{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--gold),transparent);transform:scaleX(0);transition:transform 0.3s;}
 .hero-stat:hover{background:rgba(201,146,10,0.06);}
-.hero-stat:hover::before{transform:scaleX(1);}
 .hero-stat-n{font-family:'Anton',sans-serif;font-size:2.6rem;line-height:1;background:linear-gradient(180deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hero-stat-l{font-family:'Teko',sans-serif;font-size:0.7rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:2px;}
-
-/* 519 EASTER EGG BUTTON */
 .btn-519{display:inline-flex;align-items:center;justify-content:center;margin-top:20px;animation:fadeUp 0.65s ease 0.35s both;cursor:pointer;border:none;background:none;padding:0;}
 .btn-519-inner{font-family:'Anton',sans-serif;font-size:1rem;letter-spacing:3px;color:var(--black);background:linear-gradient(135deg,var(--gold3),var(--gold2),var(--gold3));padding:8px 20px;border-radius:4px;display:flex;align-items:center;gap:8px;box-shadow:0 0 20px rgba(201,146,10,0.4),0 0 40px rgba(201,146,10,0.2);animation:glow519 2s ease-in-out infinite;position:relative;overflow:hidden;}
 .btn-519-inner::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);transform:translateX(-100%);animation:shine519 3s ease-in-out infinite;}
-@keyframes glow519{0%,100%{box-shadow:0 0 20px rgba(201,146,10,0.4),0 0 40px rgba(201,146,10,0.2)}50%{box-shadow:0 0 30px rgba(201,146,10,0.7),0 0 60px rgba(201,146,10,0.4)}}
+@keyframes glow519{0%,100%{box-shadow:0 0 20px rgba(201,146,10,0.4)}50%{box-shadow:0 0 40px rgba(201,146,10,0.7)}}
 @keyframes shine519{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}
 .btn-519-label{font-size:0.6rem;letter-spacing:2px;color:rgba(0,0,0,0.6);font-family:'Teko',sans-serif;}
-
 @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-
-/* BANDS */
+/* NAV CARDS */
+.nav-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+.nav-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:28px;text-decoration:none;display:flex;align-items:center;gap:18px;transition:transform 0.2s,border-color 0.2s,box-shadow 0.2s;position:relative;overflow:hidden;}
+.nav-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold3),var(--gold));opacity:0;transition:opacity 0.2s;}
+.nav-card:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 16px 40px rgba(0,0,0,0.5),0 0 20px rgba(201,146,10,0.08);}
+.nav-card:hover::before{opacity:1;}
+.nc-icon{font-size:2.5rem;flex-shrink:0;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4));}
+.nc-title{font-family:'Anton',sans-serif;font-size:1.3rem;letter-spacing:1px;color:var(--text);margin-bottom:4px;}
+.nc-sub{font-size:0.8rem;color:var(--muted);line-height:1.4;}
+/* CURRENT SEASON SNAPSHOT */
+.snapshot-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px;}
+.snap-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;}
+.snap-label{font-family:'Teko',sans-serif;font-size:0.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+.snap-val{font-family:'Anton',sans-serif;font-size:2rem;letter-spacing:1px;background:linear-gradient(180deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+.snap-detail{font-family:'Teko',sans-serif;font-size:0.9rem;color:var(--text2);margin-top:4px;letter-spacing:0.5px;}
+/* STANDINGS MINI */
+.st-mini{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.st-mini thead tr{background:rgba(201,146,10,0.06);border-bottom:1px solid rgba(201,146,10,0.15);}
+.st-mini th{font-family:'Teko',sans-serif;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:12px 16px;text-align:center;}
+.st-mini th:nth-child(2){text-align:left;}
+.st-mini td{padding:11px 16px;border-bottom:1px solid rgba(28,34,53,0.5);text-align:center;vertical-align:middle;}
+.st-mini td:nth-child(2){text-align:left;}
+.st-mini tr:last-child td{border-bottom:none;}
+.st-mini tbody tr{transition:background 0.12s;}
+.st-mini tbody tr:hover{background:rgba(201,146,10,0.03);}
+.st-mini tbody tr:nth-child(1) td:first-child{border-left:2px solid var(--gold2);}
+.st-mini tbody tr:nth-child(2) td:first-child{border-left:2px solid #8a95aa;}
+.st-mini tbody tr:nth-child(3) td:first-child{border-left:2px solid #9c6a30;}
+.td-rank{font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--muted);}
+.rank-1 .td-rank{color:var(--gold2);}
+.rank-2 .td-rank{color:#8a95aa;}
+.rank-3 .td-rank{color:#9c6a30;}
+.td-team{font-family:'Teko',sans-serif;font-size:0.98rem;font-weight:600;color:var(--text);}
+.td-mgr{font-size:0.7rem;color:var(--muted);}
+.td-wl{font-family:'Teko',sans-serif;font-size:1rem;font-weight:600;}
+.td-pf{color:var(--gold2);font-family:'Teko',sans-serif;font-size:0.9rem;font-weight:600;}
+.badge{font-family:'Teko',sans-serif;font-size:0.58rem;letter-spacing:1.5px;border-radius:3px;padding:2px 6px;text-transform:uppercase;margin-left:5px;vertical-align:middle;}
+.badge-po{background:rgba(201,146,10,0.12);color:var(--gold2);border:1px solid rgba(201,146,10,0.3);}
+.badge-danger{background:rgba(181,32,32,0.12);color:#e05555;border:1px solid rgba(181,32,32,0.3);}
+/* BAND */
 .band{position:relative;z-index:1;border-top:1px solid var(--border);}
 .band-inner{max-width:1320px;margin:0 auto;padding:80px 40px;}
 .band-alt{background:linear-gradient(180deg,var(--surface) 0%,var(--dark) 100%);}
-
-/* SECTION HEADER */
 .sh{display:flex;align-items:flex-end;gap:20px;margin-bottom:48px;padding-bottom:20px;border-bottom:1px solid var(--border);position:relative;}
 .sh::after{content:'';position:absolute;bottom:-1px;left:0;width:120px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
 .sh-eyebrow{font-family:'Teko',sans-serif;font-size:0.72rem;letter-spacing:4px;color:var(--red2);text-transform:uppercase;margin-bottom:4px;}
 .sh-title{font-family:'Anton',sans-serif;font-size:clamp(2.2rem,5vw,3.8rem);letter-spacing:2px;line-height:1;color:var(--text);}
 .sh-title em{font-style:normal;background:linear-gradient(135deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.sh-num{font-family:'Anton',sans-serif;font-size:7rem;line-height:1;color:var(--border);margin-left:auto;user-select:none;letter-spacing:-2px;}
-
-/* TROPHY GRID */
-.trophy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;}
-.tc{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.3s,border-color 0.3s;transform-style:preserve-3d;cursor:default;}
-.tc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--gold3),var(--gold),transparent);opacity:0;transition:opacity 0.3s;}
-.tc::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(201,146,10,0.06) 50%,transparent 70%);transform:translateX(-100%);}
-.tc:hover{transform:translateY(-6px) rotateX(2deg);border-color:var(--gold);box-shadow:0 20px 50px rgba(0,0,0,0.6),0 0 30px rgba(201,146,10,0.12),inset 0 1px 0 rgba(201,146,10,0.1);}
-.tc:hover::before{opacity:1;}
-.tc:hover::after{transform:translateX(100%);transition:transform 0.6s ease;}
-.tc-banner{background:linear-gradient(135deg,#120e00,#1e1600);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(201,146,10,0.15);}
-.tc-year{font-family:'Anton',sans-serif;font-size:2rem;letter-spacing:2px;background:linear-gradient(180deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.tc-icon{font-size:2rem;filter:drop-shadow(0 2px 8px rgba(201,146,10,0.4));}
-.tc-body{padding:18px 20px;}
-.tc-label{font-family:'Teko',sans-serif;font-size:0.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
-.tc-winner{font-family:'Anton',sans-serif;font-size:1.5rem;letter-spacing:1px;color:var(--text);margin-bottom:2px;}
-.tc-team{font-family:'Teko',sans-serif;font-size:1rem;color:var(--gold2);letter-spacing:1px;margin-bottom:4px;}
-.tc-record{font-family:'Teko',sans-serif;font-size:0.9rem;color:var(--muted);letter-spacing:1px;}
-.tc-score{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-family:'Teko',sans-serif;font-size:0.8rem;color:var(--muted);letter-spacing:1px;}
-.tc-score strong{color:var(--gold2);font-size:0.95rem;}
-.tc-note{margin-top:8px;font-size:0.76rem;font-style:italic;color:var(--muted);}
-.tc-podium{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
-.tc-podium-row{display:flex;align-items:center;gap:8px;padding:3px 0;font-family:'Teko',sans-serif;font-size:0.82rem;}
-.tc-p-place{color:var(--muted);width:20px;font-size:0.7rem;}
-.tc-p-name{color:var(--text2);}
-.tc-empty{opacity:0.4;background:repeating-linear-gradient(45deg,var(--card),var(--card) 8px,var(--surface) 8px,var(--surface) 16px);}
-
-/* RECORDS */
-.records-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.rec-block{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
-.rec-head{padding:14px 20px;background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
-.rec-head-icon{font-size:1.3rem;}
-.rec-head-title{font-family:'Teko',sans-serif;font-size:1rem;letter-spacing:2px;text-transform:uppercase;color:var(--text);}
-.rec-list{padding:4px 0;}
-.rec-row{display:flex;align-items:center;padding:11px 20px;border-bottom:1px solid rgba(28,34,53,0.6);gap:12px;transition:background 0.12s;}
-.rec-row:last-child{border-bottom:none;}
-.rec-row:hover{background:rgba(201,146,10,0.04);}
-.rec-rank{font-family:'Anton',sans-serif;font-size:1rem;color:var(--dim);width:22px;text-align:center;flex-shrink:0;}
-.rec-rank.gold{color:var(--gold2);text-shadow:0 0 8px rgba(201,146,10,0.4);}
-.rec-rank.silver{color:#8a95aa;}
-.rec-rank.bronze{color:#9c6a30;}
-.rec-info{flex:1;min-width:0;}
-.rec-name{font-family:'Teko',sans-serif;font-size:1rem;font-weight:600;color:var(--text);letter-spacing:0.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.rec-detail{font-size:0.75rem;color:var(--muted);margin-top:1px;}
-.rec-val{font-family:'Anton',sans-serif;font-size:1.25rem;letter-spacing:1px;background:linear-gradient(180deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex-shrink:0;}
-
-/* AWARDS */
-.awards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;}
-.aw{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:transform 0.2s,border-color 0.2s,box-shadow 0.2s;}
-.aw:hover{transform:translateY(-3px);border-color:var(--border2);box-shadow:0 12px 40px rgba(0,0,0,0.5);}
-.aw-top{padding:22px 20px 16px;background:rgba(255,255,255,0.015);border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:14px;position:relative;overflow:hidden;}
-.aw-top::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(201,146,10,0.04),transparent 70%);}
-.aw-emoji{font-size:2.8rem;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4));flex-shrink:0;position:relative;z-index:1;}
-.aw-meta{position:relative;z-index:1;}
-.aw-name{font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:1px;color:var(--text);margin-bottom:5px;}
-.aw-desc{font-size:0.8rem;color:var(--muted);line-height:1.5;font-style:italic;}
-.aw-hist{padding:12px 18px;}
-.aw-hist-label{font-family:'Teko',sans-serif;font-size:0.65rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:8px;}
-.aw-row{display:flex;align-items:center;padding:6px 0;border-bottom:1px solid rgba(28,34,53,0.5);gap:8px;}
-.aw-row:last-child{border-bottom:none;}
-.aw-yr{font-family:'Teko',sans-serif;font-size:0.78rem;letter-spacing:1px;color:var(--muted);width:38px;flex-shrink:0;}
-.aw-winner{font-family:'Teko',sans-serif;font-size:0.95rem;font-weight:600;color:var(--text);flex:1;}
-.aw-detail{font-size:0.7rem;color:var(--muted);text-align:right;}
-
-/* STANDINGS */
-.st-table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
-.st-table thead tr{background:rgba(201,146,10,0.06);border-bottom:1px solid rgba(201,146,10,0.15);}
-.st-table th{font-family:'Teko',sans-serif;font-size:0.75rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);padding:14px 18px;text-align:center;}
-.st-table th:nth-child(2){text-align:left;}
-.st-table td{padding:13px 18px;border-bottom:1px solid rgba(28,34,53,0.5);text-align:center;vertical-align:middle;}
-.st-table td:nth-child(2){text-align:left;}
-.st-table tr:last-child td{border-bottom:none;}
-.st-table tbody tr{transition:background 0.12s;}
-.st-table tbody tr:hover{background:rgba(201,146,10,0.03);}
-.st-table tbody tr:nth-child(1) td:first-child{border-left:2px solid var(--gold2);}
-.st-table tbody tr:nth-child(2) td:first-child{border-left:2px solid #8a95aa;}
-.st-table tbody tr:nth-child(3) td:first-child{border-left:2px solid #9c6a30;}
-.td-rank{font-family:'Anton',sans-serif;font-size:1.15rem;color:var(--muted);}
-.rank-1 .td-rank{color:var(--gold2);text-shadow:0 0 12px rgba(201,146,10,0.4);}
-.rank-2 .td-rank{color:#8a95aa;}
-.rank-3 .td-rank{color:#9c6a30;}
-.td-team{font-family:'Teko',sans-serif;font-size:1rem;font-weight:600;letter-spacing:0.5px;color:var(--text);}
-.td-manager{font-size:0.72rem;color:var(--muted);margin-top:1px;}
-.badge{font-family:'Teko',sans-serif;font-size:0.6rem;letter-spacing:1.5px;border-radius:3px;padding:2px 7px;text-transform:uppercase;margin-left:6px;vertical-align:middle;}
-.badge-po{background:rgba(201,146,10,0.12);color:var(--gold2);border:1px solid rgba(201,146,10,0.3);}
-.badge-danger{background:rgba(181,32,32,0.12);color:#e05555;border:1px solid rgba(181,32,32,0.3);}
-.td-wl{font-family:'Teko',sans-serif;font-size:1.1rem;font-weight:600;}
-.td-pf{color:var(--gold2);font-family:'Teko',sans-serif;font-size:0.95rem;font-weight:600;}
-.td-pa{color:#d05555;font-family:'Teko',sans-serif;font-size:0.95rem;font-weight:600;}
-.td-streak{font-family:'Teko',sans-serif;font-size:1rem;letter-spacing:1px;font-weight:600;}
-.streak-w{color:#4ade80;}.streak-l{color:#f87171;}
-
-/* LORE SECTION */
-.lore-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
-.lore-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;transition:transform 0.2s,border-color 0.2s;}
-.lore-card:hover{transform:translateY(-3px);border-color:var(--border2);}
-.lore-card-icon{font-size:2.5rem;margin-bottom:14px;display:block;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4));}
-.lore-card-title{font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:1px;color:var(--text);margin-bottom:8px;}
-.lore-card-body{font-size:0.85rem;color:var(--muted);line-height:1.6;}
-.lore-card-body strong{color:var(--gold2);}
-.lore-card-body em{color:var(--text2);font-style:normal;}
-
-/* TOILET BOWL */
-.toilet-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:32px;}
-.toilet-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px;position:relative;overflow:hidden;}
-.toilet-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#8b0000,transparent);}
-.toilet-yr{font-family:'Anton',sans-serif;font-size:1.4rem;letter-spacing:2px;color:#8b0000;margin-bottom:4px;}
-.toilet-team{font-family:'Teko',sans-serif;font-size:1rem;font-weight:600;color:var(--text);margin-bottom:2px;}
-.toilet-manager{font-size:0.75rem;color:var(--muted);margin-bottom:8px;}
-.toilet-punishment{font-size:0.78rem;font-style:italic;color:#e05555;line-height:1.4;padding-top:8px;border-top:1px solid var(--border);}
-.toilet-status{display:inline-block;font-family:'Teko',sans-serif;font-size:0.62rem;letter-spacing:1.5px;padding:2px 8px;border-radius:3px;margin-top:6px;text-transform:uppercase;}
-.status-done{background:rgba(74,222,128,0.1);color:#4ade80;border:1px solid rgba(74,222,128,0.3);}
-.status-dodged{background:rgba(181,32,32,0.1);color:#e05555;border:1px solid rgba(181,32,32,0.3);}
-.status-na{background:rgba(90,100,120,0.1);color:var(--muted);border:1px solid rgba(90,100,120,0.3);}
-
-/* FOOTER */
-footer{position:relative;z-index:1;background:var(--black);border-top:1px solid var(--border);padding:48px 40px;text-align:center;overflow:hidden;}
+.sh-num{font-family:'Anton',sans-serif;font-size:7rem;line-height:1;color:var(--border);margin-left:auto;user-select:none;}
+footer{position:relative;z-index:1;background:var(--black);border-top:1px solid var(--border);padding:40px;text-align:center;overflow:hidden;}
 footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
-.footer-logo{font-family:'Anton',sans-serif;font-size:2.5rem;letter-spacing:6px;background:linear-gradient(180deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;filter:drop-shadow(0 0 20px rgba(201,146,10,0.2));}
-.footer-tagline{font-family:'Teko',sans-serif;font-size:0.8rem;letter-spacing:4px;color:var(--muted);text-transform:uppercase;}
-.footer-rule{width:80px;height:1px;background:var(--border);margin:20px auto;}
-.footer-copy{font-size:0.72rem;color:var(--dim);letter-spacing:1px;}
-
-/* MOBILE NAV */
-.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:58px;background:rgba(6,8,13,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:500;justify-content:space-around;align-items:center;}
-.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--muted);font-family:'Teko',sans-serif;font-size:0.58rem;letter-spacing:1px;text-transform:uppercase;transition:color 0.15s;flex:1;padding:8px;}
-.nav-mobile a:hover{color:var(--gold2);}
-.nm-icon{font-size:1.2rem;}
-
-/* REVEAL */
+.footer-logo{font-family:'Anton',sans-serif;font-size:2rem;letter-spacing:6px;background:linear-gradient(180deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.footer-sub{font-family:'Teko',sans-serif;font-size:0.78rem;letter-spacing:4px;color:var(--muted);text-transform:uppercase;}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.65s ease,transform 0.65s ease;}
 .reveal.in{opacity:1;transform:translateY(0);}
 .d1{transition-delay:0.1s;}.d2{transition-delay:0.2s;}.d3{transition-delay:0.3s;}
-
 @media(max-width:768px){
   .nav-links{display:none;}.nav-mobile{display:flex;}
   body{padding-bottom:58px;}
   .band-inner{padding:56px 20px;}
   .hero-content{padding:0 24px 60px;}
-  .records-grid{grid-template-columns:1fr;}
   .sh-num{display:none;}
-  .trophy-grid{grid-template-columns:1fr 1fr;}
+  .snapshot-grid{grid-template-columns:1fr;}
 }
-@media(max-width:480px){.trophy-grid,.awards-grid,.lore-grid{grid-template-columns:1fr;}}
-@media print{body{background:white;color:black;}.ticker,.nav-mobile{display:none;}}
+@media(max-width:480px){.nav-cards{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -243,21 +136,22 @@ footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(
   <div class="ticker-track">
     <span>WHATAGANG Fantasy Football</span><span>Est. Store #519 · Built Different</span>
     <span>5 Seasons · 10 Teams · IDP League</span><span>Where Legends Are Made and Excuses Are Born</span>
-    <span>2025 Champ: Joshua's Deepball</span><span>Back-to-Back: Andrew 2021-2022</span>
+    <span>2025 Champ: Joshua's Deepball</span><span>Back-to-Back Champion: Andrew 2021-2022</span>
     <span>WHATAGANG Fantasy Football</span><span>Est. Store #519 · Built Different</span>
     <span>5 Seasons · 10 Teams · IDP League</span><span>Where Legends Are Made and Excuses Are Born</span>
-    <span>2025 Champ: Joshua's Deepball</span><span>Back-to-Back: Andrew 2021-2022</span>
+    <span>2025 Champ: Joshua's Deepball</span><span>Back-to-Back Champion: Andrew 2021-2022</span>
   </div>
 </div>
 
 <nav>
-  <a href="#" class="nav-brand"><div class="nav-live-dot"></div>WHATAGANG</a>
+  <a href="index.html" class="nav-brand"><div class="nav-live-dot"></div>WHATAGANG</a>
   <ul class="nav-links">
-    <li><a href="#trophies">Trophies</a></li>
-    <li><a href="#records">Records</a></li>
-    <li><a href="#awards">Awards</a></li>
-    <li><a href="#standings">Standings</a></li>
-    <li><a href="#lore">Lore</a></li>
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="trophies.html">Trophies</a></li>
+    <li><a href="awards.html">Awards</a></li>
+    <li><a href="teams.html">Teams</a></li>
+    <li><a href="history.html">History</a></li>
+    <li><a href="draftboard.html">Draft Board</a></li>
   </ul>
   <div class="nav-end">2026 Season Coming</div>
 </nav>
@@ -281,409 +175,90 @@ footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(
       <div class="hero-stat"><div class="hero-stat-n">IDP</div><div class="hero-stat-l">League</div></div>
     </div>
     <button class="btn-519" onclick="window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ','_blank')">
-      <div class="btn-519-inner">
-        <span>🍔</span>
-        <span>519</span>
-        <span class="btn-519-label">SECRET</span>
-      </div>
+      <div class="btn-519-inner"><span>🍔</span><span>519</span><span class="btn-519-label">SECRET</span></div>
     </button>
   </div>
 </div>
 
-<!-- TROPHIES -->
-<div class="band band-alt" id="trophies">
+<!-- CURRENT SEASON SNAPSHOT -->
+<div class="band band-alt">
   <div class="band-inner">
     <div class="sh reveal">
-      <div><div class="sh-eyebrow">Hall of Champions</div><div class="sh-title">TROPHY <em>ROOM</em></div></div>
-      <div class="sh-num">01</div>
+      <div><div class="sh-eyebrow">Final Results</div><div class="sh-title">2025 <em>SEASON</em></div></div>
+      <div class="sh-num">25</div>
     </div>
-    <div class="trophy-grid">
-
-      <div class="tc reveal">
-        <div class="tc-banner"><div class="tc-year">2025</div><div class="tc-icon">🏆</div></div>
-        <div class="tc-body">
-          <div class="tc-label">Champion</div>
-          <div class="tc-winner">Josh</div>
-          <div class="tc-team">Joshua's Deepball</div>
-          <div class="tc-record">8-6 · Regular Season</div>
-          <div class="tc-note">"Started the season on fire and never looked back"</div>
-          <div class="tc-podium">
-            <div class="tc-podium-row"><span class="tc-p-place">🥈</span><span class="tc-p-name">Jeremiah — Super Lamario</span></div>
-            <div class="tc-podium-row"><span class="tc-p-place">🥉</span><span class="tc-p-name">Adrian — Indiana Jones</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tc reveal d1">
-        <div class="tc-banner"><div class="tc-year">2024</div><div class="tc-icon">🏆</div></div>
-        <div class="tc-body">
-          <div class="tc-label">Champion</div>
-          <div class="tc-winner">Davashtian</div>
-          <div class="tc-team">Davashtian's Primo Team</div>
-          <div class="tc-record">9-5 · Regular Season</div>
-          <div class="tc-podium">
-            <div class="tc-podium-row"><span class="tc-p-place">🥈</span><span class="tc-p-name">Zach — Gibbs Me Moore</span></div>
-            <div class="tc-podium-row"><span class="tc-p-place">🥉</span><span class="tc-p-name">Fabian — Frijoleros</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tc reveal d2">
-        <div class="tc-banner"><div class="tc-year">2023</div><div class="tc-icon">🏆</div></div>
-        <div class="tc-body">
-          <div class="tc-label">Champion</div>
-          <div class="tc-winner">Zach</div>
-          <div class="tc-team">Saints Row</div>
-          <div class="tc-record">10-5 · Regular Season</div>
-          <div class="tc-podium">
-            <div class="tc-podium-row"><span class="tc-p-place">🥈</span><span class="tc-p-name">Dominic — The BallZachs</span></div>
-            <div class="tc-podium-row"><span class="tc-p-place">🥉</span><span class="tc-p-name">Evan — Evans Inconsistent Gang</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tc reveal">
-        <div class="tc-banner"><div class="tc-year">2022</div><div class="tc-icon">🏆</div></div>
-        <div class="tc-body">
-          <div class="tc-label">Champion</div>
-          <div class="tc-winner">Andrew 👑</div>
-          <div class="tc-team">Long Live Chubbs</div>
-          <div class="tc-record">8-7 · Regular Season</div>
-          <div class="tc-note">"Back-to-back champion. The only one."</div>
-          <div class="tc-podium">
-            <div class="tc-podium-row"><span class="tc-p-place">🥈</span><span class="tc-p-name">Bdawg — Brandon's Swag Team</span></div>
-            <div class="tc-podium-row"><span class="tc-p-place">🥉</span><span class="tc-p-name">Jeremiah — Jeremiah's Fortnite Squad</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tc reveal d1">
-        <div class="tc-banner"><div class="tc-year">2021</div><div class="tc-icon">🏆</div></div>
-        <div class="tc-body">
-          <div class="tc-label">Champion</div>
-          <div class="tc-winner">Andrew 👑</div>
-          <div class="tc-team">Najee's in Paris</div>
-          <div class="tc-record">7-8 · Regular Season</div>
-          <div class="tc-note">"Won it all with a losing record. Legendary."</div>
-          <div class="tc-podium">
-            <div class="tc-podium-row"><span class="tc-p-place">🥈</span><span class="tc-p-name">Jeremiah — Jeremiah's Fortnite Squad</span></div>
-            <div class="tc-podium-row"><span class="tc-p-place">🥉</span><span class="tc-p-name">Anderson Hurley Huggins III — Lil Sniqquhs</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tc tc-empty reveal d2">
-        <div class="tc-banner"><div class="tc-year">2026</div><div class="tc-icon">⏳</div></div>
-        <div class="tc-body">
-          <div class="tc-label">Champion</div>
-          <div class="tc-winner">TBD</div>
-          <div class="tc-record">Season Not Started</div>
-          <div class="tc-note">"Who wants it?"</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- RECORDS -->
-<div class="band" id="records">
-  <div class="band-inner">
-    <div class="sh reveal">
-      <div><div class="sh-eyebrow">The History Books</div><div class="sh-title">ALL-TIME <em>RECORDS</em></div></div>
-      <div class="sh-num">02</div>
-    </div>
-    <div class="records-grid">
-
-      <div class="rec-block reveal d1">
-        <div class="rec-head"><div class="rec-head-icon">🏆</div><div class="rec-head-title">Most Championships</div></div>
-        <div class="rec-list">
-          <div class="rec-row"><div class="rec-rank gold">1</div><div class="rec-info"><div class="rec-name">Andrew (Buck-ees)</div><div class="rec-detail">2021, 2022 — Back-to-Back 👑</div></div><div class="rec-val">2</div></div>
-          <div class="rec-row"><div class="rec-rank silver">2</div><div class="rec-info"><div class="rec-name">Zach</div><div class="rec-detail">2023</div></div><div class="rec-val">1</div></div>
-          <div class="rec-row"><div class="rec-rank bronze">3</div><div class="rec-info"><div class="rec-name">Davashtian</div><div class="rec-detail">2024</div></div><div class="rec-val">1</div></div>
-          <div class="rec-row"><div class="rec-rank">4</div><div class="rec-info"><div class="rec-name">Josh</div><div class="rec-detail">2025</div></div><div class="rec-val">1</div></div>
-        </div>
-      </div>
-
-      <div class="rec-block reveal d2">
-        <div class="rec-head"><div class="rec-head-icon">🔥</div><div class="rec-head-title">Most Points — Single Season</div></div>
-        <div class="rec-list">
-          <div class="rec-row"><div class="rec-rank gold">1</div><div class="rec-info"><div class="rec-name">Zach — Saints Row</div><div class="rec-detail">2023 Season</div></div><div class="rec-val">2,040</div></div>
-          <div class="rec-row"><div class="rec-rank silver">2</div><div class="rec-info"><div class="rec-name">Josh — Joshua's Deepball</div><div class="rec-detail">2025 Season</div></div><div class="rec-val">1,951</div></div>
-          <div class="rec-row"><div class="rec-rank bronze">3</div><div class="rec-info"><div class="rec-name">Evan — Mr Miyagis Gambit BNL</div><div class="rec-detail">2024 Season</div></div><div class="rec-val">1,950</div></div>
-        </div>
-      </div>
-
-      <div class="rec-block reveal d1">
-        <div class="rec-head"><div class="rec-head-icon">📈</div><div class="rec-head-title">Best Regular Season Record</div></div>
-        <div class="rec-list">
-          <div class="rec-row"><div class="rec-rank gold">1</div><div class="rec-info"><div class="rec-name">Dominic — The BallZachs</div><div class="rec-detail">2023 Season</div></div><div class="rec-val">11-4</div></div>
-          <div class="rec-row"><div class="rec-rank silver">2</div><div class="rec-info"><div class="rec-name">Adrian — JJETTAS</div><div class="rec-detail">2022 Season</div></div><div class="rec-val">11-4</div></div>
-          <div class="rec-row"><div class="rec-rank bronze">3</div><div class="rec-info"><div class="rec-name">Zach — Saints Row</div><div class="rec-detail">2023 Season</div></div><div class="rec-val">10-5</div></div>
-        </div>
-      </div>
-
-      <div class="rec-block reveal d2">
-        <div class="rec-head"><div class="rec-head-icon">💀</div><div class="rec-head-title">Worst Regular Season Record</div></div>
-        <div class="rec-list">
-          <div class="rec-row"><div class="rec-rank gold">1</div><div class="rec-info"><div class="rec-name">Jeremiah — Double Kupp</div><div class="rec-detail">2023 Season</div></div><div class="rec-val">2-13</div></div>
-          <div class="rec-row"><div class="rec-rank silver">2</div><div class="rec-info"><div class="rec-name">Domaniq — StroudTown</div><div class="rec-detail">2024 Season</div></div><div class="rec-val">3-11</div></div>
-          <div class="rec-row"><div class="rec-rank bronze">3</div><div class="rec-info"><div class="rec-name">Anderson — Lil Sniqquhs</div><div class="rec-detail">2022 Season</div></div><div class="rec-val">4-11</div></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- AWARDS -->
-<div class="band band-alt" id="awards">
-  <div class="band-inner">
-    <div class="sh reveal">
-      <div><div class="sh-eyebrow">Annual Honors</div><div class="sh-title">AWARDS <em>HALL</em></div></div>
-      <div class="sh-num">03</div>
-    </div>
-    <div class="awards-grid">
-
-      <div class="aw reveal">
-        <div class="aw-top"><div class="aw-emoji">🏆</div><div class="aw-meta"><div class="aw-name">Manager of the Year</div><div class="aw-desc">Best managed team all season long.</div></div></div>
-        <div class="aw-hist"><div class="aw-hist-label">Winners</div>
-          <div class="aw-row"><div class="aw-yr">2025</div><div class="aw-winner">TBD</div></div>
-          <div class="aw-row"><div class="aw-yr">2024</div><div class="aw-winner">Evan</div><div class="aw-detail">Mr. Miyagis Gambit BNL</div></div>
-          <div class="aw-row"><div class="aw-yr">2023</div><div class="aw-winner">Zach</div><div class="aw-detail">Saints Row</div></div>
-          <div class="aw-row"><div class="aw-yr">2022</div><div class="aw-winner">Andrew</div><div class="aw-detail">Long Live Chubbs</div></div>
-          <div class="aw-row"><div class="aw-yr">2021</div><div class="aw-winner">Jeremiah</div><div class="aw-detail">Jeremiah's Fortnite Squad</div></div>
-        </div>
-      </div>
-
-      <div class="aw reveal d1">
-        <div class="aw-top"><div class="aw-emoji">⭐</div><div class="aw-meta"><div class="aw-name">League MVP</div><div class="aw-desc">Best individual player on any roster that season.</div></div></div>
-        <div class="aw-hist"><div class="aw-hist-label">Winners</div>
-          <div class="aw-row"><div class="aw-yr">2025</div><div class="aw-winner">TBD</div></div>
-          <div class="aw-row"><div class="aw-yr">2024</div><div class="aw-winner">Saquon Barkley</div><div class="aw-detail">Davashtian's Primo Team</div></div>
-          <div class="aw-row"><div class="aw-yr">2023</div><div class="aw-winner">CeeDee Lamb</div><div class="aw-detail">Saints Row · 1st African American winner*</div></div>
-          <div class="aw-row"><div class="aw-yr">2022</div><div class="aw-winner">Patrick Mahomes</div><div class="aw-detail">Long Live Chubbs</div></div>
-          <div class="aw-row"><div class="aw-yr">2021</div><div class="aw-winner">Cooper Kupp</div><div class="aw-detail">Manager-less Team (bot) 🤖</div></div>
-        </div>
-      </div>
-
-      <div class="aw reveal d2">
-        <div class="aw-top"><div class="aw-emoji">🏪</div><div class="aw-meta"><div class="aw-name">Waiver Wire Steal of the Year</div><div class="aw-desc">Best pickup off waivers that changed a season.</div></div></div>
-        <div class="aw-hist"><div class="aw-hist-label">Winners</div>
-          <div class="aw-row"><div class="aw-yr">2025</div><div class="aw-winner">Matthew Stafford</div><div class="aw-detail">Fabian — Frijoleros</div></div>
-          <div class="aw-row"><div class="aw-yr">2024</div><div class="aw-winner">Bucky Irving</div><div class="aw-detail">Andrew — Marvin's Room</div></div>
-        </div>
-      </div>
-
-      <div class="aw reveal">
-        <div class="aw-top"><div class="aw-emoji">🐣</div><div class="aw-meta"><div class="aw-name">Rookie of the Year</div><div class="aw-desc">Best first-year NFL player on any roster.</div></div></div>
-        <div class="aw-hist"><div class="aw-hist-label">Winners</div>
-          <div class="aw-row"><div class="aw-yr">2025</div><div class="aw-winner">Tetairoa McMillan</div><div class="aw-detail">Fabian — Frijoleros</div></div>
-          <div class="aw-row"><div class="aw-yr">2024</div><div class="aw-winner">Brock Bowers</div><div class="aw-detail">Davashtian's Primo Team</div></div>
-          <div class="aw-row"><div class="aw-yr">2023</div><div class="aw-winner">Puka Nacua</div><div class="aw-detail">Bdawg — Brandon's Swag Team</div></div>
-          <div class="aw-row"><div class="aw-yr">2022</div><div class="aw-winner">Justin Jefferson</div><div class="aw-detail">Adrian — JJETTAS</div></div>
-          <div class="aw-row"><div class="aw-yr">2021</div><div class="aw-winner">Ja'Marr Chase</div><div class="aw-detail">Andrew — Najee's in Paris</div></div>
-        </div>
-      </div>
-
-      <div class="aw reveal d1">
-        <div class="aw-top"><div class="aw-emoji">💪</div><div class="aw-meta"><div class="aw-name">Comeback Player of the Year</div><div class="aw-desc">Best turnaround story of the season.</div></div></div>
-        <div class="aw-hist"><div class="aw-hist-label">Winners</div>
-          <div class="aw-row"><div class="aw-yr">2025</div><div class="aw-winner">Josh</div><div class="aw-detail">1-5 start → 8-6 → 1st Place 🔥</div></div>
-          <div class="aw-row"><div class="aw-yr">2024</div><div class="aw-winner">Adrian</div><div class="aw-detail">Massage My Boswell</div></div>
-          <div class="aw-row"><div class="aw-yr">2023</div><div class="aw-winner">Evan</div><div class="aw-detail">Evans Extraordinary Team</div></div>
-        </div>
-      </div>
-
-      <div class="aw reveal d2">
-        <div class="aw-top"><div class="aw-emoji">🧢</div><div class="aw-meta"><div class="aw-name">Mike Tomlin Award</div><div class="aw-desc">Closest to playoff berth. 7th place grinder.</div></div></div>
-        <div class="aw-hist"><div class="aw-hist-label">Winners</div>
-          <div class="aw-row"><div class="aw-yr">2025</div><div class="aw-winner">Evan</div><div class="aw-detail">Mr. Miyagis Gambit BNL — 6-8</div></div>
-          <div class="aw-row"><div class="aw-yr">2024</div><div class="aw-winner">Jeremiah</div><div class="aw-detail">We Bring The Boom — 7-7</div></div>
-        </div>
-      </div>
-
-      <div class="aw reveal">
-        <div class="aw-top"><div class="aw-emoji">📈</div><div class="aw-meta"><div class="aw-name">Day Trader</div><div class="aw-desc">Most trades and moves all season. Never satisfied.</div></div></div>
-        <div class="aw-hist"><div class="aw-hist-label">Winners</div>
-          <div class="aw-row"><div class="aw-yr">2025</div><div class="aw-winner">Andrew</div><div class="aw-detail">Buck-ees — 101 moves</div></div>
-          <div class="aw-row"><div class="aw-yr">2024</div><div class="aw-winner">Evan</div><div class="aw-detail">Mr. Miyagis Gambit — 85 moves</div></div>
-        </div>
-      </div>
-
-      <div class="aw reveal d1">
-        <div class="aw-top"><div class="aw-emoji">🚗</div><div class="aw-meta"><div class="aw-name">Henry Ruggs III Man of the Year</div><div class="aw-desc">Most off-field drama player rostered. You know what this means.</div></div></div>
-        <div class="aw-hist"><div class="aw-hist-label">Winners</div>
-          <div class="aw-row"><div class="aw-yr">2025</div><div class="aw-winner">Tyreek Hill</div><div class="aw-detail">You already know 😂</div></div>
-          <div class="aw-row"><div class="aw-yr">2024</div><div class="aw-winner">Rashee Rice</div><div class="aw-detail">Hit and run season</div></div>
-        </div>
-      </div>
-
-      <div class="aw reveal d2">
-        <div class="aw-top"><div class="aw-emoji">🪵</div><div class="aw-meta"><div class="aw-name">Wooden Ship Award</div><div class="aw-desc">Most caucasian, high motor, intelligent white players started all season. You know the type.</div></div></div>
-        <div class="aw-hist"><div class="aw-hist-label">2024 Results</div>
-          <div class="aw-row"><div class="aw-yr">🥇</div><div class="aw-winner">Dominic — Chase Da Bag</div><div class="aw-detail">51 white players</div></div>
-          <div class="aw-row"><div class="aw-yr">🥈</div><div class="aw-winner">Andrew — Marvin's Room</div><div class="aw-detail">48 white players</div></div>
-          <div class="aw-row"><div class="aw-yr">🥉</div><div class="aw-winner">Fabian — Frijoleros</div><div class="aw-detail">47 white players</div></div>
-        </div>
-      </div>
-
-      <div class="aw reveal">
-        <div class="aw-top"><div class="aw-emoji">🏟️</div><div class="aw-meta"><div class="aw-name">Greatest Show on Turf</div><div class="aw-desc">Highest scoring game of the year. Pure entertainment.</div></div></div>
-        <div class="aw-hist"><div class="aw-hist-label">2024 Result</div>
-          <div class="aw-row"><div class="aw-yr">2024</div><div class="aw-winner">Andrew vs Bdawg</div><div class="aw-detail">181.32 – 147.50</div></div>
-        </div>
-      </div>
-
-      <div class="aw reveal d1">
-        <div class="aw-top"><div class="aw-emoji">💣</div><div class="aw-meta"><div class="aw-name">Biggest Blowout</div><div class="aw-desc">Most lopsided game of the year. Someone got cooked.</div></div></div>
-        <div class="aw-hist"><div class="aw-hist-label">2024 Result</div>
-          <div class="aw-row"><div class="aw-yr">2024</div><div class="aw-winner">Zach vs Adrian</div><div class="aw-detail">183.4 – 88.31</div></div>
-        </div>
-      </div>
-
-      <div class="aw reveal d2">
-        <div class="aw-top"><div class="aw-emoji">⏳</div><div class="aw-meta"><div class="aw-name">Longest Playoff Drought</div><div class="aw-desc">Years without a postseason appearance. The wait continues.</div></div></div>
-        <div class="aw-hist"><div class="aw-hist-label">Active Droughts</div>
-          <div class="aw-row"><div class="aw-yr">😬</div><div class="aw-winner">Domaniq — StroudTown</div><div class="aw-detail">5 years · Left the league</div></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- STANDINGS -->
-<div class="band" id="standings">
-  <div class="band-inner">
-    <div class="sh reveal">
-      <div><div class="sh-eyebrow">Final — 2025 Season</div><div class="sh-title">LEAGUE <em>STANDINGS</em></div></div>
-      <div class="sh-num">04</div>
+    <div class="snapshot-grid reveal">
+      <div class="snap-card"><div class="snap-label">Champion</div><div class="snap-val">Josh</div><div class="snap-detail">Joshua's Deepball · 8-6</div></div>
+      <div class="snap-card"><div class="snap-label">Runner Up</div><div class="snap-val">Jeremiah</div><div class="snap-detail">Super Lamario · 8-6</div></div>
+      <div class="snap-card"><div class="snap-label">3rd Place</div><div class="snap-val">Adrian</div><div class="snap-detail">Indiana Jones · 9-5</div></div>
+      <div class="snap-card"><div class="snap-label">Toilet Bowl 🚽</div><div class="snap-val">Andrew</div><div class="snap-detail">INJUR-EES · 24hrs at Whataburger</div></div>
     </div>
     <div class="reveal" style="overflow-x:auto;">
-      <table class="st-table">
-        <thead><tr><th>#</th><th>Team</th><th>W</th><th>L</th><th>PF</th><th>PA</th><th>Streak</th></tr></thead>
+      <table class="st-mini">
+        <thead><tr><th>#</th><th>Team</th><th>W</th><th>L</th><th>PF</th></tr></thead>
         <tbody>
-          <tr class="rank-1"><td><div class="td-rank">1</div></td><td><div class="td-team">Joshua's Deepball <span class="badge badge-po">Champ</span></div><div class="td-manager">Josh</div></td><td class="td-wl">8</td><td class="td-wl" style="color:var(--muted)">6</td><td class="td-pf">1951.71</td><td class="td-pa">1787.82</td><td><span class="td-streak streak-l">L-1</span></td></tr>
-          <tr class="rank-2"><td><div class="td-rank">2</div></td><td><div class="td-team">Super Lamario <span class="badge badge-po">Playoffs</span></div><div class="td-manager">Jeremiah</div></td><td class="td-wl">8</td><td class="td-wl" style="color:var(--muted)">6</td><td class="td-pf">1904.54</td><td class="td-pa">1827.05</td><td><span class="td-streak streak-w">W-2</span></td></tr>
-          <tr class="rank-3"><td><div class="td-rank">3</div></td><td><div class="td-team">Indiana Jones <span class="badge badge-po">Playoffs</span></div><div class="td-manager">Adrian</div></td><td class="td-wl">9</td><td class="td-wl" style="color:var(--muted)">5</td><td class="td-pf">1800.96</td><td class="td-pa">1713.68</td><td><span class="td-streak streak-w">W-3</span></td></tr>
-          <tr><td><div class="td-rank">4</div></td><td><div class="td-team">Davashtian's Primo Team <span class="badge badge-po">Playoffs</span></div><div class="td-manager">Davashtian</div></td><td class="td-wl">9</td><td class="td-wl" style="color:var(--muted)">5</td><td class="td-pf">1872.09</td><td class="td-pa">1746.50</td><td><span class="td-streak streak-l">L-2</span></td></tr>
-          <tr><td><div class="td-rank">5</div></td><td><div class="td-team">Amon One</div><div class="td-manager">Bdawg</div></td><td class="td-wl">7</td><td class="td-wl" style="color:var(--muted)">7</td><td class="td-pf">1876.60</td><td class="td-pa">1874.86</td><td><span class="td-streak streak-l">L-4</span></td></tr>
-          <tr><td><div class="td-rank">6</div></td><td><div class="td-team">Frijoleros</div><div class="td-manager">Fabian</div></td><td class="td-wl">7</td><td class="td-wl" style="color:var(--muted)">7</td><td class="td-pf">1816.94</td><td class="td-pa">1758.91</td><td><span class="td-streak streak-l">L-3</span></td></tr>
-          <tr><td><div class="td-rank">7</div></td><td><div class="td-team">Mr Miyagis Gambit BNL</div><div class="td-manager">Evan</div></td><td class="td-wl">6</td><td class="td-wl" style="color:var(--muted)">8</td><td class="td-pf">1805.21</td><td class="td-pa">1635.37</td><td><span class="td-streak streak-w">W-4</span></td></tr>
-          <tr><td><div class="td-rank">8</div></td><td><div class="td-team">A Bobby Shop Haircut</div><div class="td-manager">Dominic</div></td><td class="td-wl">5</td><td class="td-wl" style="color:var(--muted)">9</td><td class="td-pf">1621.46</td><td class="td-pa">1863.17</td><td><span class="td-streak streak-w">W-1</span></td></tr>
-          <tr><td><div class="td-rank">9</div></td><td><div class="td-team">Moore Mooney Moore Problems</div><div class="td-manager">Zach</div></td><td class="td-wl">5</td><td class="td-wl" style="color:var(--muted)">9</td><td class="td-pf">1510.67</td><td class="td-pa">1800.96</td><td><span class="td-streak streak-w">W-1</span></td></tr>
-          <tr><td><div class="td-rank">10</div></td><td><div class="td-team">INJUR-EES 🎾 <span class="badge badge-danger">Toilet Bowl</span></div><div class="td-manager">Andrew 🚽</div></td><td class="td-wl">6</td><td class="td-wl" style="color:var(--muted)">8</td><td class="td-pf">1608.67</td><td class="td-pa">1760.53</td><td><span class="td-streak streak-l">L-1</span></td></tr>
+          <tr class="rank-1"><td><div class="td-rank">1</div></td><td><div class="td-team">Joshua's Deepball <span class="badge badge-po">Champ</span></div><div class="td-mgr">Josh</div></td><td class="td-wl">8</td><td class="td-wl" style="color:var(--muted)">6</td><td class="td-pf">1951.71</td></tr>
+          <tr class="rank-2"><td><div class="td-rank">2</div></td><td><div class="td-team">Super Lamario</div><div class="td-mgr">Jeremiah</div></td><td class="td-wl">8</td><td class="td-wl" style="color:var(--muted)">6</td><td class="td-pf">1904.54</td></tr>
+          <tr class="rank-3"><td><div class="td-rank">3</div></td><td><div class="td-team">Indiana Jones</div><div class="td-mgr">Adrian</div></td><td class="td-wl">9</td><td class="td-wl" style="color:var(--muted)">5</td><td class="td-pf">1800.96</td></tr>
+          <tr><td><div class="td-rank">4</div></td><td><div class="td-team">Davashtian's Primo Team <span class="badge badge-po">PO</span></div><div class="td-mgr">Davashtian</div></td><td class="td-wl">9</td><td class="td-wl" style="color:var(--muted)">5</td><td class="td-pf">1872.09</td></tr>
+          <tr><td><div class="td-rank">5</div></td><td><div class="td-team">Amon One</div><div class="td-mgr">Bdawg</div></td><td class="td-wl">7</td><td class="td-wl" style="color:var(--muted)">7</td><td class="td-pf">1876.60</td></tr>
+          <tr><td><div class="td-rank">6</div></td><td><div class="td-team">Frijoleros</div><div class="td-mgr">Fabian</div></td><td class="td-wl">7</td><td class="td-wl" style="color:var(--muted)">7</td><td class="td-pf">1816.94</td></tr>
+          <tr><td><div class="td-rank">7</div></td><td><div class="td-team">Mr Miyagis Gambit BNL</div><div class="td-mgr">Evan</div></td><td class="td-wl">6</td><td class="td-wl" style="color:var(--muted)">8</td><td class="td-pf">1805.21</td></tr>
+          <tr><td><div class="td-rank">8</div></td><td><div class="td-team">A Bobby Shop Haircut</div><div class="td-mgr">Dominic</div></td><td class="td-wl">5</td><td class="td-wl" style="color:var(--muted)">9</td><td class="td-pf">1621.46</td></tr>
+          <tr><td><div class="td-rank">9</div></td><td><div class="td-team">Moore Mooney Moore Problems</div><div class="td-mgr">Zach</div></td><td class="td-wl">5</td><td class="td-wl" style="color:var(--muted)">9</td><td class="td-pf">1510.67</td></tr>
+          <tr><td><div class="td-rank">10</div></td><td><div class="td-team">INJUR-EES 🎾 <span class="badge badge-danger">🚽</span></div><div class="td-mgr">Andrew</div></td><td class="td-wl">6</td><td class="td-wl" style="color:var(--muted)">8</td><td class="td-pf">1608.67</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </div>
 
-<!-- LORE -->
-<div class="band band-alt" id="lore">
+<!-- NAV CARDS -->
+<div class="band">
   <div class="band-inner">
     <div class="sh reveal">
-      <div><div class="sh-eyebrow">League History & Legends</div><div class="sh-title">LEAGUE <em>LORE</em></div></div>
-      <div class="sh-num">05</div>
+      <div><div class="sh-eyebrow">Explore The League</div><div class="sh-title">QUICK <em>ACCESS</em></div></div>
     </div>
-
-    <div class="lore-grid">
-      <div class="lore-card reveal">
-        <span class="lore-card-icon">🍔</span>
-        <div class="lore-card-title">The Origin Story</div>
-        <div class="lore-card-body">WHATAGANG was born at <strong>Whataburger Store #519</strong>. A group of coworkers turned a shift job into a fantasy football dynasty. The league name, the logo, the culture — all of it traces back to one burger joint. <em>Est. 2021.</em></div>
-      </div>
-
-      <div class="lore-card reveal d1">
-        <span class="lore-card-icon">👑</span>
-        <div class="lore-card-title">The Back-to-Back</div>
-        <div class="lore-card-body"><strong>Andrew (Buck-ees)</strong> is the only manager in WHATAGANG history to win back-to-back championships. <em>2021 as Najee's in Paris</em>, <em>2022 as Long Live Chubbs</em>. Nobody else has come close. The standard.</div>
-      </div>
-
-      <div class="lore-card reveal d2">
-        <span class="lore-card-icon">👻</span>
-        <div class="lore-card-title">Anderson Hurley Huggins III</div>
-        <div class="lore-card-body">A founding member. A legend. A ghost. <strong>Anderson Hurley Huggins III</strong> played 2021 and 2022 as <em>Lil Sniqquhs</em>, finished 3rd in the inaugural season, and was never seen again. His name lives forever in these halls.</div>
-      </div>
-
-      <div class="lore-card reveal">
-        <span class="lore-card-icon">🏃</span>
-        <div class="lore-card-title">Domaniq's Great Escape</div>
-        <div class="lore-card-body"><strong>Domaniq (StroudTown)</strong> played 4 seasons without a playoff appearance, setting the all-time drought record at 5 years. In 2024 he finished last, faced the <em>Milk Mile punishment</em>, and chose to leave the league instead. Replaced by Josh in 2025.</div>
-      </div>
-
-      <div class="lore-card reveal d1">
-        <span class="lore-card-icon">🚽</span>
-        <div class="lore-card-title">The Toilet Bowl Punishment</div>
-        <div class="lore-card-body">Last place pays the price. The punishment tradition started around 2023. <strong>2024:</strong> Domaniq — Milk Mile. He left instead. <strong>2025:</strong> Andrew — <em>24 hours at Whataburger.</em> He actually did it. The first manager to ever serve the sentence. A true WHATAGANG soldier. 🍔</div>
-      </div>
-
-      <div class="lore-card reveal d2">
-        <span class="lore-card-icon">📈</span>
-        <div class="lore-card-title">The Comeback Kid — 2025</div>
-        <div class="lore-card-body"><strong>Josh (Joshua's Deepball)</strong> started the 2025 season <em>1-5</em> and looked dead in the water. He finished <em>8-6</em>, made the playoffs, and won the whole thing. First season in the league. Won it all. Instant legend status.</div>
-      </div>
+    <div class="nav-cards">
+      <a href="trophies.html" class="nav-card reveal">
+        <div class="nc-icon">🏆</div>
+        <div><div class="nc-title">Trophy Room</div><div class="nc-sub">5 seasons of champions, podium finishes and championship history</div></div>
+      </a>
+      <a href="awards.html" class="nav-card reveal d1">
+        <div class="nc-icon">🎖️</div>
+        <div><div class="nc-title">Awards Hall</div><div class="nc-sub">Manager of the Year, MVP, Wooden Ship, Henry Ruggs III and more</div></div>
+      </a>
+      <a href="teams.html" class="nav-card reveal d2">
+        <div class="nc-icon">👤</div>
+        <div><div class="nc-title">Team Pages</div><div class="nc-sub">Full history for all 10 managers — records, championships, awards</div></div>
+      </a>
+      <a href="history.html" class="nav-card reveal">
+        <div class="nc-icon">📖</div>
+        <div><div class="nc-title">League Bible</div><div class="nc-sub">The story of WHATAGANG from Store #519 to dynasty. Season by season.</div></div>
+      </a>
+      <a href="draftboard.html" class="nav-card reveal d1">
+        <div class="nc-icon">📋</div>
+        <div><div class="nc-title">Draft Board</div><div class="nc-sub">Live 2026 draft board — track picks, trades and assignments in real time</div></div>
+      </a>
+      <a href="#" class="nav-card reveal d2" onclick="window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ','_blank');return false;">
+        <div class="nc-icon">🍔</div>
+        <div><div class="nc-title">Store #519</div><div class="nc-sub">Where it all began. The origin of WHATAGANG. Click if you dare.</div></div>
+      </a>
     </div>
-
-    <!-- TOILET BOWL HISTORY -->
-    <div style="margin-top:48px;">
-      <div class="sh-eyebrow" style="margin-bottom:12px;">Toilet Bowl Hall of Shame</div>
-      <div class="sh-title" style="font-family:'Anton',sans-serif;font-size:2rem;letter-spacing:2px;margin-bottom:24px;">THE 🚽 <em style="font-style:normal;background:linear-gradient(135deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">LOSERS</em></div>
-      <div class="toilet-grid">
-        <div class="toilet-card reveal">
-          <div class="toilet-yr">2021</div>
-          <div class="toilet-team">Manager-less Team</div>
-          <div class="toilet-manager">🤖 The Bot</div>
-          <div class="toilet-punishment">No punishment. Can't punish a bot. Lucky.</div>
-          <span class="toilet-status status-na">N/A</span>
-        </div>
-        <div class="toilet-card reveal d1">
-          <div class="toilet-yr">2022</div>
-          <div class="toilet-team">Lil Sniqquhs</div>
-          <div class="toilet-manager">Anderson Hurley Huggins III</div>
-          <div class="toilet-punishment">Punishment tradition not yet established. Anderson disappeared from the league shortly after.</div>
-          <span class="toilet-status status-na">Pre-Punishment Era</span>
-        </div>
-        <div class="toilet-card reveal d2">
-          <div class="toilet-yr">2023</div>
-          <div class="toilet-team">I Just Work Here?</div>
-          <div class="toilet-manager">🤖 The Bot (again)</div>
-          <div class="toilet-punishment">Bot got last place. Nobody had to do anything. The league got lucky two years in a row.</div>
-          <span class="toilet-status status-na">Dodged by Bot</span>
-        </div>
-        <div class="toilet-card reveal">
-          <div class="toilet-yr">2024</div>
-          <div class="toilet-team">StroudTown</div>
-          <div class="toilet-manager">Domaniq</div>
-          <div class="toilet-punishment">Punishment: Milk Mile. Domaniq chose to leave the league instead of doing it. Left without saying a word.</div>
-          <span class="toilet-status status-dodged">Punishment Dodged 🏃</span>
-        </div>
-        <div class="toilet-card reveal d1">
-          <div class="toilet-yr">2025</div>
-          <div class="toilet-team">INJUR-EES 🎾</div>
-          <div class="toilet-manager">Andrew (Buck-ees)</div>
-          <div class="toilet-punishment">Punishment: 24 hours at Whataburger. Store #519. Where it all began. He showed up. He served the time. The only manager to ever actually do it.</div>
-          <span class="toilet-status status-done">Punishment Served 💪</span>
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 
 <footer>
   <div class="footer-logo">WHATAGANG</div>
-  <div class="footer-tagline">Fantasy Football League · Est. Store #519 · 2021 · Built Different</div>
-  <div class="footer-rule"></div>
-  <div class="footer-copy">10 Teams · 16 Rounds · IDP · Snake Draft with Trade Picks · Andrew is the GOAT</div>
+  <div class="footer-sub">Fantasy Football League · Est. Store #519 · 2021 · Built Different</div>
 </footer>
 
 <div class="nav-mobile">
-  <a href="#trophies"><span class="nm-icon">🏆</span>Trophies</a>
-  <a href="#records"><span class="nm-icon">📊</span>Records</a>
-  <a href="#awards"><span class="nm-icon">🎖️</span>Awards</a>
-  <a href="#standings"><span class="nm-icon">📋</span>Standings</a>
+  <a href="index.html" class="active"><span class="nm-icon">🏠</span>Home</a>
+  <a href="trophies.html"><span class="nm-icon">🏆</span>Trophies</a>
+  <a href="teams.html"><span class="nm-icon">👤</span>Teams</a>
+  <a href="awards.html"><span class="nm-icon">🎖️</span>Awards</a>
+  <a href="history.html"><span class="nm-icon">📖</span>History</a>
 </div>
 
 <script>
