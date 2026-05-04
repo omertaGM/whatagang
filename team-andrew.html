@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WHATAGANG — Andrew</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Teko:wght@300;400;500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--black:#06080d;--dark:#0a0d14;--surface:#0e111a;--card:#131825;--border:#1c2235;--border2:#242d45;--gold:#c9920a;--gold2:#e8ab18;--gold3:#f5c842;--red:#b52020;--red2:#d42828;--text:#dde3f0;--text2:#a8b4cc;--muted:#58657e;--dim:#2a3348;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--text);font-family:'Barlow',sans-serif;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.6;}
+.ticker{background:var(--red);height:34px;overflow:hidden;display:flex;align-items:center;position:relative;z-index:200;}
+.ticker::before,.ticker::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;}
+.ticker::before{left:0;background:linear-gradient(90deg,var(--red),transparent);}
+.ticker::after{right:0;background:linear-gradient(-90deg,var(--red),transparent);}
+.ticker-track{display:flex;animation:ticker 40s linear infinite;white-space:nowrap;}
+.ticker-track span{font-family:'Teko',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.92);padding:0 40px;}
+.ticker-track span::before{content:'◆';margin-right:40px;opacity:0.5;font-size:0.5rem;vertical-align:middle;}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+nav{position:sticky;top:0;z-index:500;height:58px;background:rgba(6,8,13,0.96);backdrop-filter:blur(16px) saturate(180%);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 40px;gap:8px;}
+nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,var(--gold) 20%,var(--gold3) 50%,var(--gold) 80%,transparent 100%);background-size:200% 100%;animation:navshine 6s ease-in-out infinite;opacity:0.7;}
+@keyframes navshine{0%,100%{background-position:200% center;opacity:0.4}50%{background-position:-200% center;opacity:0.9}}
+.nav-brand{font-family:'Anton',sans-serif;font-size:1.35rem;letter-spacing:4px;color:var(--gold2);text-decoration:none;display:flex;align-items:center;gap:10px;text-shadow:0 0 30px rgba(201,146,10,0.4);flex-shrink:0;}
+.nav-live-dot{width:7px;height:7px;background:var(--red2);border-radius:50%;animation:livepulse 2s ease-in-out infinite;box-shadow:0 0 6px var(--red2);}
+@keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.75)}}
+.nav-links{display:flex;list-style:none;margin-left:24px;gap:2px;}
+.nav-links a{font-family:'Teko',sans-serif;font-size:1rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:6px 14px;border-radius:3px;transition:color 0.15s,background 0.15s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:2px;left:14px;right:14px;height:1px;background:var(--gold2);transform:scaleX(0);transition:transform 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold2);background:rgba(201,146,10,0.06);}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);}
+.nav-end{margin-left:auto;font-family:'Teko',sans-serif;font-size:0.75rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:58px;background:rgba(6,8,13,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:500;justify-content:space-around;align-items:center;}
+.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--muted);font-family:'Teko',sans-serif;font-size:0.58rem;letter-spacing:1px;text-transform:uppercase;transition:color 0.15s;flex:1;padding:8px;}
+.nav-mobile a:hover,.nav-mobile a.active{color:var(--gold2);}
+.nm-icon{font-size:1.2rem;}
+/* PLAYER HERO */
+.player-hero{position:relative;background:var(--black);min-height:50vh;display:flex;align-items:flex-end;overflow:hidden;border-bottom:1px solid var(--border);padding:0 56px 56px;}
+.ph-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 30% 40%,rgba(201,146,10,0.1) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 80% 60%,rgba(181,32,32,0.08) 0%,transparent 50%),linear-gradient(180deg,var(--black) 0%,rgba(6,8,13,0.6) 50%,var(--black) 100%);pointer-events:none;}
+.ph-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,146,10,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(201,146,10,0.02) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 30% 40%,black,transparent);}
+.ph-content{position:relative;z-index:2;max-width:1320px;width:100%;}
+.ph-back{display:inline-flex;align-items:center;gap:8px;font-family:'Teko',sans-serif;font-size:0.78rem;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase;margin-bottom:24px;transition:color 0.15s;}
+.ph-back:hover{color:var(--gold2);}
+.ph-eyebrow{font-family:'Teko',sans-serif;font-size:0.75rem;letter-spacing:4px;color:var(--red2);text-transform:uppercase;margin-bottom:10px;}
+.ph-name{font-family:'Anton',sans-serif;font-size:clamp(4rem,12vw,9rem);letter-spacing:2px;line-height:0.85;margin-bottom:8px;}
+.ph-name .pn-w{display:block;background:linear-gradient(180deg,#fff 0%,#c0c8d8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ph-name .pn-g{display:block;background:linear-gradient(180deg,var(--gold3) 0%,var(--gold2) 50%,#8a5f00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(201,146,10,0.4));}
+.ph-team{font-family:'Teko',sans-serif;font-size:1.2rem;letter-spacing:2px;color:var(--gold2);margin-bottom:16px;}
+.ph-badges{display:flex;flex-wrap:wrap;gap:8px;}
+.badge{font-family:'Teko',sans-serif;font-size:0.65rem;letter-spacing:1.5px;border-radius:3px;padding:4px 10px;text-transform:uppercase;}
+.badge-og{background:rgba(201,146,10,0.15);color:var(--gold2);border:1px solid rgba(201,146,10,0.3);}
+.badge-champ{background:rgba(201,146,10,0.12);color:var(--gold2);border:1px solid rgba(201,146,10,0.3);}
+.badge-goat{background:rgba(201,146,10,0.2);color:var(--gold3);border:1px solid rgba(201,146,10,0.4);}
+.badge-red{background:rgba(181,32,32,0.12);color:#e05555;border:1px solid rgba(181,32,32,0.3);}
+.badge-silver{background:rgba(168,180,204,0.1);color:var(--text2);border:1px solid rgba(168,180,204,0.2);}
+.badge-blue{background:rgba(100,149,237,0.12);color:#7eb8f7;border:1px solid rgba(100,149,237,0.3);}
+/* CAREER STATS BAR */
+.career-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));background:var(--card);border:1px solid var(--border);border-top:none;}
+.cs-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);position:relative;}
+.cs-stat:last-child{border-right:none;}
+.cs-stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.4;}
+.cs-n{font-family:'Anton',sans-serif;font-size:2rem;line-height:1;background:linear-gradient(180deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cs-l{font-family:'Teko',sans-serif;font-size:0.68rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:4px;}
+/* BAND */
+.band{position:relative;z-index:1;border-top:1px solid var(--border);}
+.band-inner{max-width:1320px;margin:0 auto;padding:72px 40px;}
+.band-alt{background:linear-gradient(180deg,var(--surface) 0%,var(--dark) 100%);}
+.sh{display:flex;align-items:flex-end;gap:20px;margin-bottom:40px;padding-bottom:18px;border-bottom:1px solid var(--border);position:relative;}
+.sh::after{content:'';position:absolute;bottom:-1px;left:0;width:100px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
+.sh-eyebrow{font-family:'Teko',sans-serif;font-size:0.7rem;letter-spacing:4px;color:var(--red2);text-transform:uppercase;margin-bottom:4px;}
+.sh-title{font-family:'Anton',sans-serif;font-size:clamp(1.8rem,4vw,3rem);letter-spacing:2px;line-height:1;color:var(--text);}
+.sh-title em{font-style:normal;background:linear-gradient(135deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+/* SEASON TIMELINE */
+.season-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+.season-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px;position:relative;overflow:hidden;transition:border-color 0.2s,transform 0.2s;}
+.season-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.season-card.champ{border-color:rgba(201,146,10,0.4);background:linear-gradient(135deg,rgba(201,146,10,0.05),var(--card));}
+.season-card.champ::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold3),var(--gold));}
+.sc-year{font-family:'Anton',sans-serif;font-size:1.6rem;letter-spacing:2px;color:var(--muted);margin-bottom:4px;}
+.season-card.champ .sc-year{color:var(--gold2);}
+.sc-team{font-family:'Teko',sans-serif;font-size:0.95rem;font-weight:600;color:var(--text);letter-spacing:0.5px;margin-bottom:4px;}
+.sc-record{font-family:'Teko',sans-serif;font-size:0.85rem;color:var(--muted);letter-spacing:1px;margin-bottom:8px;}
+.sc-finish{font-family:'Teko',sans-serif;font-size:0.75rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.sc-finish.gold{color:var(--gold2);}
+.sc-finish.silver{color:#8a95aa;}
+.sc-finish.bronze{color:#9c6a30;}
+.sc-note{font-size:0.75rem;font-style:italic;color:var(--muted);margin-top:6px;line-height:1.4;}
+/* AWARDS LIST */
+.awards-list{display:flex;flex-direction:column;gap:10px;}
+.award-row{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:16px 20px;display:flex;align-items:center;gap:16px;transition:border-color 0.15s;}
+.award-row:hover{border-color:var(--border2);}
+.award-emoji{font-size:1.8rem;flex-shrink:0;}
+.award-info{flex:1;}
+.award-name{font-family:'Anton',sans-serif;font-size:1rem;letter-spacing:1px;color:var(--text);margin-bottom:2px;}
+.award-detail{font-size:0.78rem;color:var(--muted);}
+.award-year{font-family:'Teko',sans-serif;font-size:1rem;letter-spacing:1px;color:var(--gold2);flex-shrink:0;}
+/* LORE */
+.lore-block{background:linear-gradient(135deg,rgba(201,146,10,0.04),rgba(181,32,32,0.03));border:1px solid rgba(201,146,10,0.15);border-radius:8px;padding:32px;}
+.lore-block p{font-size:0.95rem;color:var(--text2);line-height:1.8;margin-bottom:16px;}
+.lore-block p:last-child{margin-bottom:0;}
+.lore-block strong{color:var(--text);}
+.lore-block em{color:var(--gold2);font-style:normal;}
+/* RIVALS */
+.rivals-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.rival-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;align-items:center;gap:16px;transition:border-color 0.2s;}
+.rival-card:hover{border-color:var(--border2);}
+.rival-icon{font-size:1.8rem;flex-shrink:0;}
+.rival-name{font-family:'Anton',sans-serif;font-size:1.1rem;letter-spacing:1px;color:var(--text);margin-bottom:4px;}
+.rival-record{font-family:'Teko',sans-serif;font-size:1rem;color:var(--muted);letter-spacing:1px;}
+.rival-desc{font-size:0.75rem;color:var(--muted);margin-top:4px;font-style:italic;}
+/* TEAM NAME HISTORY */
+.names-list{display:flex;flex-direction:column;gap:8px;}
+.name-row{display:flex;align-items:center;gap:16px;padding:12px 18px;background:var(--card);border:1px solid var(--border);border-radius:6px;}
+.name-yr{font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--gold2);width:48px;flex-shrink:0;}
+.name-team{font-family:'Teko',sans-serif;font-size:1.05rem;font-weight:600;color:var(--text);flex:1;letter-spacing:0.5px;}
+.name-note{font-size:0.72rem;color:var(--muted);font-style:italic;}
+footer{position:relative;z-index:1;background:var(--black);border-top:1px solid var(--border);padding:40px;text-align:center;overflow:hidden;}
+footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.footer-logo{font-family:'Anton',sans-serif;font-size:2rem;letter-spacing:6px;background:linear-gradient(180deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.footer-sub{font-family:'Teko',sans-serif;font-size:0.78rem;letter-spacing:4px;color:var(--muted);text-transform:uppercase;}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.d1{transition-delay:0.1s;}.d2{transition-delay:0.2s;}.d3{transition-delay:0.3s;}
+@media(max-width:768px){.nav-links{display:none;}.nav-mobile{display:flex;}body{padding-bottom:58px;}.band-inner{padding:52px 20px;}.player-hero{padding:0 24px 40px;min-height:40vh;}.rivals-grid{grid-template-columns:1fr;}.season-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.season-grid{grid-template-columns:1fr;}.career-bar{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<div class="ticker">
+  <div class="ticker-track">
+    <span>Andrew · Buck-ees · 2 Championships</span><span>The only back-to-back champion in WHATAGANG history</span>
+    <span>2021 · 2022 · Back-to-Back 👑</span><span>Served 24 hours at Whataburger Store #519 · 2025 Toilet Bowl</span>
+    <span>Andrew · Buck-ees · 2 Championships</span><span>The only back-to-back champion in WHATAGANG history</span>
+    <span>2021 · 2022 · Back-to-Back 👑</span><span>Served 24 hours at Whataburger Store #519 · 2025 Toilet Bowl</span>
+  </div>
+</div>
+<nav>
+  <a href="index.html" class="nav-brand"><div class="nav-live-dot"></div>WHATAGANG</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="trophies.html">Trophies</a></li>
+    <li><a href="awards.html">Awards</a></li>
+    <li><a href="teams.html" class="active">Teams</a></li>
+    <li><a href="history.html">History</a></li>
+    <li><a href="draftboard.html">Draft Board</a></li>
+  </ul>
+  <div class="nav-end">2026 Season Coming</div>
+</nav>
+
+<div class="player-hero">
+  <div class="ph-bg"></div>
+  <div class="ph-grid"></div>
+  <div class="ph-content">
+    <a href="teams.html" class="ph-back">← All Teams</a>
+    <div class="ph-eyebrow">👑 OG · Since 2021 · 5 Seasons</div>
+    <div class="ph-name">
+      <span class="pn-w">ANDREW</span>
+      <span class="pn-g">BUCK-EES</span>
+    </div>
+    <div class="ph-team">2025 Team Name</div>
+    <div class="ph-badges">
+      <span class="badge badge-og">👑 OG</span>
+      <span class="badge badge-goat">GOAT</span>
+      <span class="badge badge-champ">🏆 2021 Champion</span>
+      <span class="badge badge-champ">🏆 2022 Champion</span>
+      <span class="badge badge-red">🚽 2025 Toilet Bowl</span>
+    </div>
+  </div>
+</div>
+
+<!-- CAREER STATS -->
+<div class="career-bar reveal">
+  <div class="cs-stat"><div class="cs-n">2</div><div class="cs-l">Championships</div></div>
+  <div class="cs-stat"><div class="cs-n">5</div><div class="cs-l">Seasons</div></div>
+  <div class="cs-stat"><div class="cs-n">3</div><div class="cs-l">Playoff Apps</div></div>
+  <div class="cs-stat"><div class="cs-n">MOY</div><div class="cs-l">2022</div></div>
+  <div class="cs-stat"><div class="cs-n">#519</div><div class="cs-l">Served It</div></div>
+</div>
+
+<!-- SEASONS -->
+<div class="band band-alt">
+  <div class="band-inner">
+    <div class="sh reveal"><div><div class="sh-eyebrow">Year by Year</div><div class="sh-title">SEASON <em>HISTORY</em></div></div></div>
+    <div class="season-grid">
+      <div class="season-card champ reveal">
+        <div class="sc-year">2021</div>
+        <div class="sc-team">Najee's in Paris</div>
+        <div class="sc-record">7-8 · 1,737 PF</div>
+        <div class="sc-finish gold">🏆 Champion</div>
+        <div class="sc-note">Won the inaugural season with a losing record. The tone was set immediately.</div>
+      </div>
+      <div class="season-card champ reveal d1">
+        <div class="sc-year">2022</div>
+        <div class="sc-team">Long Live Chubbs</div>
+        <div class="sc-record">8-7 · 1,873 PF</div>
+        <div class="sc-finish gold">🏆 Champion · Back-to-Back</div>
+        <div class="sc-note">The only manager in league history to defend the title. Won Manager of the Year.</div>
+      </div>
+      <div class="season-card reveal d2">
+        <div class="sc-year">2023</div>
+        <div class="sc-team">Let Him Cook</div>
+        <div class="sc-record">8-7 · 1,745 PF</div>
+        <div class="sc-finish">6th Place</div>
+        <div class="sc-note">Missed the playoffs. The dynasty had run its course.</div>
+      </div>
+      <div class="season-card reveal">
+        <div class="sc-year">2024</div>
+        <div class="sc-team">Marvin's Room</div>
+        <div class="sc-record">9-5 · 1,865 PF</div>
+        <div class="sc-finish">5th Place</div>
+        <div class="sc-note">Made playoffs, knocked out early. Picked up Bucky Irving off waivers — Waiver Wire Steal of the Year.</div>
+      </div>
+      <div class="season-card reveal d1">
+        <div class="sc-year">2025</div>
+        <div class="sc-team">INJUR-EES 🎾</div>
+        <div class="sc-record">6-8 · 1,608 PF</div>
+        <div class="sc-finish" style="color:#e05555;">🚽 10th Place · Toilet Bowl</div>
+        <div class="sc-note">Last place. Served 24 hours at Whataburger Store #519. The first manager to actually complete the punishment.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AWARDS -->
+<div class="band">
+  <div class="band-inner">
+    <div class="sh reveal"><div><div class="sh-eyebrow">Accolades</div><div class="sh-title">AWARDS & <em>HONORS</em></div></div></div>
+    <div class="awards-list">
+      <div class="award-row reveal"><div class="award-emoji">🏆</div><div class="award-info"><div class="award-name">League Champion</div><div class="award-detail">Najee's in Paris · Inaugural Season</div></div><div class="award-year">2021</div></div>
+      <div class="award-row reveal d1"><div class="award-emoji">🏆</div><div class="award-info"><div class="award-name">League Champion · Back-to-Back</div><div class="award-detail">Long Live Chubbs · Only back-to-back in league history</div></div><div class="award-year">2022</div></div>
+      <div class="award-row reveal d2"><div class="award-emoji">🏆</div><div class="award-info"><div class="award-name">Manager of the Year</div><div class="award-detail">Long Live Chubbs</div></div><div class="award-year">2022</div></div>
+      <div class="award-row reveal"><div class="award-emoji">🐣</div><div class="award-info"><div class="award-name">Rookie of the Year (Player)</div><div class="award-detail">Ja'Marr Chase · Najee's in Paris</div></div><div class="award-year">2021</div></div>
+      <div class="award-row reveal d1"><div class="award-emoji">🏪</div><div class="award-info"><div class="award-name">Waiver Wire Steal of the Year</div><div class="award-detail">Bucky Irving · Marvin's Room</div></div><div class="award-year">2024</div></div>
+      <div class="award-row reveal d2"><div class="award-emoji">📈</div><div class="award-info"><div class="award-name">Day Trader</div><div class="award-detail">Buck-ees · 101 moves — most in league history</div></div><div class="award-year">2025</div></div>
+      <div class="award-row reveal"><div class="award-emoji">🚽</div><div class="award-info"><div class="award-name">Toilet Bowl · Punishment Served</div><div class="award-detail">INJUR-EES · 24 hours at Whataburger Store #519. He showed up.</div></div><div class="award-year">2025</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- LORE -->
+<div class="band band-alt">
+  <div class="band-inner">
+    <div class="sh reveal"><div><div class="sh-eyebrow">The Story</div><div class="sh-title">LEAGUE <em>LORE</em></div></div></div>
+    <div class="lore-block reveal">
+      <p>Andrew is the standard. Two championships in the first two seasons of WHATAGANG — a back-to-back that no other manager has come close to replicating. He won the inaugural title in 2021 with a <em>losing record</em>, which set the tone for everything this league became. You don't have to be the best team. You just have to be the best team when it matters.</p>
+      <p>2022 was the confirmation. As <em>Long Live Chubbs</em>, he ran it back and became the only manager in WHATAGANG history to win consecutive championships. Manager of the Year. Back-to-back champion. The case was closed.</p>
+      <p>The years since have been quieter. Missed the playoffs in 2023. Made them in 2024 and went home early. Then 2025 happened — INJUR-EES, last place, and a date with destiny. <strong>24 hours at Whataburger Store #519</strong>. The place where it all started. He sat there. He served it. Every other manager who faced the punishment found a reason to leave or dodge it. Andrew walked in.</p>
+      <p>The commissioner. The back-to-back champion. The first man to ever serve the sentence. The standard hasn't changed — just the circumstances.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TOP RIVALS -->
+<div class="band">
+  <div class="band-inner">
+    <div class="sh reveal"><div><div class="sh-eyebrow">Biggest Matchups</div><div class="sh-title">TOP <em>RIVALS</em></div></div></div>
+    <div class="rivals-grid">
+      <div class="rival-card reveal">
+        <div class="rival-icon">⚔️</div>
+        <div>
+          <div class="rival-name">Jeremiah</div>
+          <div class="rival-record">Fellow OG · 5 seasons of history</div>
+          <div class="rival-desc">The longest running matchup in WHATAGANG. Two OGs who have met in some of the most contested games since day one.</div>
+        </div>
+      </div>
+      <div class="rival-card reveal d1">
+        <div class="rival-icon">⚔️</div>
+        <div>
+          <div class="rival-name">Zach</div>
+          <div class="rival-record">Fellow OG · The one who ended the dynasty</div>
+          <div class="rival-desc">Zach's 2023 championship as Saints Row marked the end of Andrew's reign. There's history between these two.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM NAME HISTORY -->
+<div class="band band-alt">
+  <div class="band-inner">
+    <div class="sh reveal"><div><div class="sh-eyebrow">Every Season</div><div class="sh-title">TEAM NAME <em>HISTORY</em></div></div></div>
+    <div class="names-list">
+      <div class="name-row reveal"><div class="name-yr">2021</div><div class="name-team">Najee's in Paris</div><div class="name-note">🏆 Champion</div></div>
+      <div class="name-row reveal d1"><div class="name-yr">2022</div><div class="name-team">Long Live Chubbs</div><div class="name-note">🏆 Champion · Back-to-Back</div></div>
+      <div class="name-row reveal d2"><div class="name-yr">2023</div><div class="name-team">Let Him Cook</div><div class="name-note">6th place</div></div>
+      <div class="name-row reveal"><div class="name-yr">2024</div><div class="name-team">Marvin's Room</div><div class="name-note">5th place · Waiver Steal of the Year</div></div>
+      <div class="name-row reveal d1"><div class="name-yr">2025</div><div class="name-team">INJUR-EES 🎾 / Buck-ees</div><div class="name-note">🚽 Toilet Bowl · Served the sentence</div></div>
+    </div>
+  </div>
+</div>
+
+<footer><div class="footer-logo">WHATAGANG</div><div class="footer-sub">Fantasy Football League · Est. Store #519 · 2021 · Built Different</div></footer>
+<div class="nav-mobile">
+  <a href="index.html"><span class="nm-icon">🏠</span>Home</a>
+  <a href="trophies.html"><span class="nm-icon">🏆</span>Trophies</a>
+  <a href="teams.html" class="active"><span class="nm-icon">👤</span>Teams</a>
+  <a href="awards.html"><span class="nm-icon">🎖️</span>Awards</a>
+  <a href="history.html"><span class="nm-icon">📖</span>History</a>
+</div>
+<script>const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:0.08});setTimeout(()=>document.querySelectorAll('.reveal').forEach(el=>obs.observe(el)),80);</script>
+</body>
+</html>
