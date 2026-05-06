@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WHATAGANG — Meme Wall</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Teko:wght@300;400;500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--black:#06080d;--dark:#0a0d14;--surface:#0e111a;--card:#131825;--border:#1c2235;--border2:#242d45;--gold:#c9920a;--gold2:#e8ab18;--gold3:#f5c842;--red:#b52020;--red2:#d42828;--text:#dde3f0;--text2:#a8b4cc;--muted:#58657e;--dim:#2a3348;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--text);font-family:'Barlow',sans-serif;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.6;}
+.ticker{background:var(--red);height:34px;overflow:hidden;display:flex;align-items:center;position:relative;z-index:200;}
+.ticker::before,.ticker::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;}
+.ticker::before{left:0;background:linear-gradient(90deg,var(--red),transparent);}
+.ticker::after{right:0;background:linear-gradient(-90deg,var(--red),transparent);}
+.ticker-track{display:flex;animation:ticker 40s linear infinite;white-space:nowrap;}
+.ticker-track span{font-family:'Teko',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.92);padding:0 40px;}
+.ticker-track span::before{content:'◆';margin-right:40px;opacity:0.5;font-size:0.5rem;vertical-align:middle;}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+nav{position:sticky;top:0;z-index:500;height:58px;background:rgba(6,8,13,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 40px;gap:8px;}
+nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--gold3),var(--gold),transparent);background-size:200% 100%;animation:navshine 6s ease-in-out infinite;opacity:0.7;}
+@keyframes navshine{0%,100%{background-position:200% center;opacity:0.4}50%{background-position:-200% center;opacity:0.9}}
+.nav-brand{font-family:'Anton',sans-serif;font-size:1.35rem;letter-spacing:4px;color:var(--gold2);text-decoration:none;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.nav-live-dot{width:7px;height:7px;background:var(--red2);border-radius:50%;animation:livepulse 2s ease-in-out infinite;box-shadow:0 0 6px var(--red2);}
+@keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.75)}}
+.nav-links{display:flex;list-style:none;margin-left:24px;gap:2px;}
+.nav-links a{font-family:'Teko',sans-serif;font-size:1rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:6px 14px;border-radius:3px;transition:color 0.15s,background 0.15s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold2);background:rgba(201,146,10,0.06);}
+.nav-end{margin-left:auto;font-family:'Teko',sans-serif;font-size:0.75rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.nav-dropdown{position:relative;}
+.nav-dropdown-btn{font-family:'Teko',sans-serif;font-size:1rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold2);background:rgba(201,146,10,0.06);border:none;cursor:pointer;padding:6px 14px;border-radius:3px;display:flex;align-items:center;gap:6px;}
+.nav-dropdown-arrow{font-size:0.6rem;display:inline-block;}
+.nav-dropdown-menu{position:absolute;top:calc(100% + 8px);right:0;background:rgba(6,8,13,0.98);border:1px solid var(--border);border-radius:8px;min-width:210px;padding:6px;display:none;flex-direction:column;gap:2px;backdrop-filter:blur(20px);box-shadow:0 16px 40px rgba(0,0,0,0.7);z-index:600;}
+.nav-dropdown-menu.open{display:flex;}
+.nav-dropdown-menu a{font-family:'Teko',sans-serif;font-size:0.9rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:9px 14px;border-radius:5px;transition:color 0.15s,background 0.15s;display:flex;align-items:center;gap:10px;}
+.nav-dropdown-menu a:hover,.nav-dropdown-menu a.active{color:var(--gold2);background:rgba(201,146,10,0.08);}
+.dm-icon{font-size:1rem;}
+.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:58px;background:rgba(6,8,13,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:500;justify-content:space-around;align-items:center;}
+.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--muted);font-family:'Teko',sans-serif;font-size:0.58rem;letter-spacing:1px;text-transform:uppercase;transition:color 0.15s;flex:1;padding:8px;}
+.nav-mobile a:hover,.nav-mobile a.active{color:var(--gold2);}
+.nm-icon{font-size:1.2rem;}
+.page-hero{position:relative;background:var(--black);padding:80px 56px 60px;overflow:hidden;border-bottom:1px solid var(--border);}
+.page-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,146,10,0.07) 0%,transparent 60%);pointer-events:none;}
+.page-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,146,10,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(201,146,10,0.02) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 0%,black,transparent);}
+.page-hero-content{position:relative;z-index:2;max-width:1320px;}
+.page-eyebrow{font-family:'Teko',sans-serif;font-size:0.78rem;letter-spacing:4px;text-transform:uppercase;color:var(--red2);margin-bottom:12px;display:flex;align-items:center;gap:12px;}
+.page-eyebrow::before{content:'';width:28px;height:1px;background:var(--red2);opacity:0.6;}
+.page-title{font-family:'Anton',sans-serif;font-size:clamp(3.5rem,10vw,8rem);letter-spacing:2px;line-height:0.9;}
+.pt-white{display:block;background:linear-gradient(180deg,#ffffff 0%,#c0c8d8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.pt-gold{display:block;background:linear-gradient(180deg,var(--gold3) 0%,var(--gold2) 60%,#8a5f00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.page-sub{font-family:'Teko',sans-serif;font-size:1rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:16px;}
+.band{position:relative;z-index:1;border-top:1px solid var(--border);}
+.band-inner{max-width:1000px;margin:0 auto;padding:72px 40px;}
+.band-alt{background:linear-gradient(180deg,var(--surface) 0%,var(--dark) 100%);}
+.coming-soon{text-align:center;padding:80px 40px;}
+.cs-icon{font-size:5rem;margin-bottom:24px;display:block;filter:drop-shadow(0 4px 20px rgba(201,146,10,0.2));}
+.cs-title{font-family:'Anton',sans-serif;font-size:3rem;letter-spacing:3px;background:linear-gradient(180deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px;}
+.cs-body{font-size:1rem;color:var(--muted);line-height:1.7;max-width:500px;margin:0 auto 32px;}
+.cs-note{font-family:'Teko',sans-serif;font-size:0.8rem;letter-spacing:3px;color:var(--dim);text-transform:uppercase;}
+footer{position:relative;z-index:1;background:var(--black);border-top:1px solid var(--border);padding:40px;text-align:center;overflow:hidden;}
+footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.footer-logo{font-family:'Anton',sans-serif;font-size:2rem;letter-spacing:6px;background:linear-gradient(180deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.footer-sub{font-family:'Teko',sans-serif;font-size:0.78rem;letter-spacing:4px;color:var(--muted);text-transform:uppercase;}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+@media(max-width:768px){.nav-links{display:none;}.nav-mobile{display:flex;}body{padding-bottom:58px;}.band-inner{padding:52px 20px;}.page-hero{padding:60px 24px 40px;}}
+</style>
+</head>
+<body>
+<div class="ticker">
+  <div class="ticker-track">
+    <span>WHATAGANG Fantasy Football</span><span>The Moments · The Chaos</span>
+    <span>Est. Store #519 · Built Different</span>
+    <span>WHATAGANG Fantasy Football</span><span>The Moments · The Chaos</span>
+    <span>Est. Store #519 · Built Different</span>
+  </div>
+</div>
+<nav>
+  <a href="index.html" class="nav-brand"><div class="nav-live-dot"></div>WHATAGANG</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="trophies.html">Trophies</a></li>
+    <li><a href="awards.html">Awards</a></li>
+    <li><a href="teams.html">Teams</a></li>
+    <li><a href="history.html">History</a></li>
+    <li><a href="draftboard.html">Draft Board</a></li>
+    <li class="nav-dropdown">
+      <button class="nav-dropdown-btn" onclick="toggleExtras(this)">Extras <span class="nav-dropdown-arrow">▼</span></button>
+      <div class="nav-dropdown-menu" id="extrasMenu">
+        <a href="powerrankings.html"><span class="dm-icon">📊</span>Power Rankings</a>
+        <a href="h2h.html"><span class="dm-icon">⚔️</span>Head to Head</a>
+        <a href="recaps.html"><span class="dm-icon">📖</span>Season Recaps</a>
+        <a href="memwall.html"><span class="dm-icon">😂</span>Meme Wall</a>
+        <a href="commissioner.html"><span class="dm-icon">📢</span>Commissioner Corner</a>
+      </div>
+    </li>
+  </ul>
+  <div class="nav-end">2026 Season Coming</div>
+</nav>
+<div class="page-hero">
+  <div class="page-hero-bg"></div><div class="page-hero-grid"></div>
+  <div class="page-hero-content">
+    <div class="page-eyebrow">The Moments · The Chaos</div>
+    <div class="page-title"><span class="pt-white">MEME</span><span class="pt-gold">WALL</span></div>
+    <div class="page-sub">Screenshots · Trash Talk · Moments That Defined The League</div>
+  </div>
+</div>
+<div class="band band-alt">
+  <div class="band-inner">
+    <div class="coming-soon reveal">
+      <span class="cs-icon">😂</span>
+      <div class="cs-title">Coming Soon</div>
+      <div class="cs-body">The Meme Wall is where the real WHATAGANG lives. Screenshots of legendary trash talk, memes from game weeks, the funniest moments in league history — all of it goes here. Drop your submissions to the commissioner.</div>
+      <div class="cs-note">Phase 2 · WHATAGANG 2026</div>
+    </div>
+  </div>
+</div>
+<footer><div class="footer-logo">WHATAGANG</div><div class="footer-sub">Fantasy Football League · Est. Store #519 · 2021 · Built Different</div></footer>
+<div class="nav-mobile">
+  <a href="index.html"><span class="nm-icon">🏠</span>Home</a>
+  <a href="trophies.html"><span class="nm-icon">🏆</span>Trophies</a>
+  <a href="teams.html"><span class="nm-icon">👤</span>Teams</a>
+  <a href="awards.html"><span class="nm-icon">🎖️</span>Awards</a>
+  <a href="history.html"><span class="nm-icon">📖</span>History</a>
+</div>
+<script>
+function toggleExtras(btn){btn.classList.toggle('open');document.getElementById('extrasMenu').classList.toggle('open');}
+document.addEventListener('click',e=>{if(!e.target.closest('.nav-dropdown')){document.querySelectorAll('.nav-dropdown-btn').forEach(b=>b.classList.remove('open'));document.querySelectorAll('.nav-dropdown-menu').forEach(m=>m.classList.remove('open'));}});
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:0.08});
+setTimeout(()=>document.querySelectorAll('.reveal').forEach(el=>obs.observe(el)),80);
+</script>
+</body>
+</html>
